@@ -1,4 +1,4 @@
-
 Prism G2 
+============
 
-Prism G2 is distributed system based on NodeJS designed for flexible automated process control.
+Prism G2 is a distributed control system designed for flexible automated process control based on NodeJS.
