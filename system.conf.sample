@@ -1,0 +1,97 @@
+{
+	core : {
+		
+		uuid : "550e8400-e29b-41d4-a716-446655440000",
+		listen : "0.0.0.0:45450",		
+		neighborhood : ["192.168.0.2:45450", "192.168.0.3:45450"],
+		sync_roles_with_neighbor : "true",
+		sync_permissions_with_neighbor : "true",
+
+		journal : {
+			handler : "prism_g2_linuxlog",
+			verbosity : "5",
+			configure : {
+				path : "/var/log/prism-g2",
+				max_log_size : "10M"			
+			}
+		},
+
+		spawn : [
+			{ id : "collector_dio01", priority : "normal" }
+			{ id : "frontend_xmp", priority : "normal" }
+			{ id : "frontend_snmp", priority : "normal" }
+		],
+
+		shm : {					
+			handler : "prism_g2_redis",
+			configure : {
+			
+			}
+		}
+	},
+
+	roles : [		
+
+		{ role : "public", cword1 : "sdsd", cword2 : "wdwdlo" },
+		{ role : "dispatcher", cword1 : "34234", cword2 : "fsfsdf" },
+		{ role : "diag", cword1 : "123", cword2 : "123" }
+	],
+
+	permissions : [
+
+		{ id : "perm_all_rw", grant : ["r", "w"], roles : ["public", "dispatcher"] }
+	]
+	
+	collectors : [
+
+		{
+			id : "dio01",			
+			handler : "io_adv_pci1710",
+			use : "collector_dio01",
+						
+			configure : {
+				bind : "1:1"
+			},
+
+			channels : [
+				{					
+					id : { group : "1", id : "1"},
+					max_lock_interval : "20"
+				}
+			]
+		}
+	],
+
+	frontends : [
+
+		{
+			id : "xmp",
+			use : "frontend_xmp",
+			sync_with_neighbor : "true",
+
+			configure : {
+
+			},
+
+			alias : [
+				"mapped_1_1" : { 
+					ident : { group : "1", id : "1"},
+					permission : ["perm_all_rw", { grant : ["r"], roles : ["diag"] }]
+				}
+			]
+		},
+		
+		{
+			id : "snmp",
+			use : "frontend_snmp",
+			sync_with_neighbor : "true",
+
+			configure : {
+
+			},
+
+			alias : [ ]
+		}
+
+	]
+}
