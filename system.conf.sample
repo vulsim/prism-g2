@@ -27,7 +27,7 @@
 			}
 		},
 
-		spawn : [
+		nodes : [
 			{ id : "c_dio01", priority : "normal" }
 			{ id : "c_xmp", priority : "normal" }
 			{ id : "c_snmp", priority : "normal" }
@@ -54,7 +54,7 @@
 	collectors : [
 		{
 			id : "dio01",			
-			use : "c_dio01",
+			node : "c_dio01",
 			handler : "io_adv-pci1710",
 									
 			configure : {				
@@ -71,7 +71,7 @@
 		},
 		{
 			id : "xmp",
-			use : "c_xmp",
+			node : "c_xmp",
 			handler : "service_xmp",
 			
 			configure : {
@@ -86,7 +86,7 @@
 		},		
 		{
 			id : "snmp",
-			use : "c_snmp",
+			node : "c_snmp",
 			handler : "service_snmp",
 
 			configure : {
