@@ -1,52 +1,77 @@
+var Class = require("./class");
+var Object = require("./object");
 
 var fs = require("fs");
 var path = require("path");
 
-var Settings = function () {
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	this.settings = {
+var Settings = Class.Inherit("Settings", Object, function (name) {
 
-	};
-	
+	Class.Construct(this, name);
+
+	this.settings = {};
+	this.path = { base : path.dirname(process.argv[1]), config : "./prism.conf", handlers : "./handlers/" };
+			
 	return this;
+});
+
+Settings.prototype.resolve = function (relativePath) {
+
+	if (this.path.base)
+		return path.resolve(this.path.base, relativePath);
+	
+	return "";
 };
 
-Settings.prototype.load = function (relativePath, settingsPath) {
+Settings.prototype.load = function (configPath) {
 
-	var newSettings = JSON.parse(fs.readFileSync(path.resolve(relativePath, settingsPath),'utf8'));
+	if (!configPath)
+		configPath = this.path.config;
+		
+	var settings = null;
 	
-	if (newSettings) {
-		
-		this.settings = newSettings;
-		this.path = path.resolve(relativePath, settingsPath);
-		
-		return true;
+	try {
+		settings = JSON.parse(fs.readFileSync(this.resolve(configPath),'utf8'));
 	}
+	catch (e) {
 
+	}
+	finally {
+			
+		if (settings) {			
+			this.settings = settings;
+			this.path.config = this.resolve(configPath);
+			this.path.handlers = this.resolve(this.path.handlers);
+			return true;
+		}
+	}		
+	
 	return false;
 };
 
 Settings.prototype.reload = function () {
 
-	if (this.path) {
+	var settings = null;
+	
+	try {			
+		settings = JSON.parse(fs.readFileSync(this.path.config,'utf8'));		
+	}
+	catch (e) {
 
-		var newSettings = null;
-		
-		try {			
-			newSettings = JSON.parse(fs.readFileSync(this.path,'utf8'));		
-		}
-		catch (e) {
-		}
-		finally {
+	}
+	finally {
 
-			if (newSettings) {
-				this.settings = newSettings;
-				return true;
-			}
+		if (settings) {
+			this.settings = settings;
+			return true;
 		}
 	}
 
 	return false;
 };
 
-module.exports = new Settings();
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+module.exports.Settings = Settings;
+module.exports.settings = Settings.default;
