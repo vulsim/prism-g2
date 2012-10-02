@@ -1,16 +1,22 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Boot up 
 
-var spawn = require("child_process").spawn;
-var path = require("path");
-var settings = require("./core/settings");
+require("./modules/min/string.format-1.0.js");
+
+require("./core/namespace").base("com.prism.2");
+
+require("./core/object").prototype.namespace = require("./core/namespace").using("core");
+
+require("./core/settings").settings.load();
+
+require("./core/journal").journal.configure();
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+//var supervisor = require("./core/supervisor");
+//supervisor.apply(settings);
+//supervisor.startAll();	
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-settings.load(path.dirname(process.argv[1]), (process.argv[2]) ? process.argv[2] : "./prism.conf");
-
-console.log(settings)
 
 
