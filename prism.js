@@ -9,7 +9,9 @@ require("./core/object").prototype.namespace = require("./core/namespace").using
 
 require("./core/settings").settings.load();
 
-require("./core/journal").journal.configure();
+require("./core/journal").journal.configure(require("./core/settings").settings.core.journal);
+
+require("./core/journal").journal.information(require("./core/settings").settings, 1, "Boot up done");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
