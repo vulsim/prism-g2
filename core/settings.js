@@ -11,15 +11,20 @@ var Settings = Class.Inherit("Settings", Object, function (name) {
 	Class.Construct(this, name);
 
 	this.settings = {};
-	this.path = { base : path.dirname(process.argv[1]), config : "./prism.conf", handlers : "./handlers/" };
+	this.path = { base : path.dirname(process.argv[1]), config : "./prism.conf", handlers : "./collectors/", use : "./system/" };
 			
 	return this;
 });
 
-Settings.prototype.resolve = function (relativePath) {
+Settings.prototype.resolve = function (relativePath, basePath) {
 
-	if (this.path.base)
-		return path.resolve(this.path.base, relativePath);
+	if (basePath) {
+		return path.resolve(basePath, relativePath);
+	} else {
+	
+		if (this.path.base)
+			return path.resolve(this.path.base, relativePath);
+	}
 	
 	return "";
 };
@@ -40,9 +45,13 @@ Settings.prototype.load = function (configPath) {
 	finally {
 			
 		if (settings) {			
-			this.settings = settings;
+			
+			for (var property in settings)
+   				this[property] = settings[property];
+        
 			this.path.config = this.resolve(configPath);
 			this.path.handlers = this.resolve(this.path.handlers);
+			this.path.use = this.resolve(this.path.use);
 			return true;
 		}
 	}		
@@ -63,7 +72,10 @@ Settings.prototype.reload = function () {
 	finally {
 
 		if (settings) {
-			this.settings = settings;
+			
+			for (var property in settings)
+   				this[property] = settings[property];
+
 			return true;
 		}
 	}

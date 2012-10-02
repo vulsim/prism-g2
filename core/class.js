@@ -7,12 +7,12 @@ module.exports.Inherit = function (ClassName, Parent, Child) {
    	var foo = new Foo();
 
    	for (var property in Child.prototype)    		
-   		foo[property] = Child.prototype[index];
+   		foo[property] = Child.prototype[property];
         
-   	Child.prototype = foo;
-   	Child.prototype.index = 0;
+      Child.prototype = foo;
+      Child.prototype.index = 0;
       Child.prototype.name = ClassName;
-   	Child.prototype.super = Parent.prototype;
+      Child.prototype.super = Parent.prototype;
       Child.default = new Child("default");
 
    	return Child;
