@@ -45,6 +45,7 @@ Journal.prototype.configure = function (settings) {
 		this.error("{} Can't load configuration");
 	}
 
+	return this;
 };
 
 Journal.prototype.format = function (sender, message) {
@@ -59,7 +60,7 @@ Journal.prototype.format = function (sender, message) {
 	return formattedMessage;
 };
 
-Journal.prototype.need = function (priority, verbosity) {
+Journal.prototype.needLog = function (priority, verbosity) {
 
 	return (10 - priority <= verbosity) ? true : false;
 };
@@ -68,7 +69,7 @@ Journal.prototype.information = function (sender, priority, message) {
 	
 	for (index in this.handlers) {
 
-		if (this.handlers[index].handler.information && this.need(priority, this.handlers[index].verbosity))
+		if (this.handlers[index].handler.information && this.needLog(priority, this.handlers[index].verbosity))
 			this.handlers[index].handler.information(this.format(sender, message));
 	}	
 };
@@ -77,7 +78,7 @@ Journal.prototype.warning = function (sender, priority, message) {
 
 	for (index in this.handlers) {
 
-		if (this.handlers[index].handler.warning && this.need(priority, this.handlers[index].verbosity))
+		if (this.handlers[index].handler.warning && this.needLog(priority, this.handlers[index].verbosity))
 			this.handlers[index].handler.warning(this.format(sender, message));
 	}
 
@@ -87,7 +88,7 @@ Journal.prototype.error = function (sender, priority, message) {
 
 	for (index in this.handlers) {
 
-		if (this.handlers[index].handler.error && this.need(priority, this.handlers[index].verbosity))
+		if (this.handlers[index].handler.error && this.needLog(priority, this.handlers[index].verbosity))
 			this.handlers[index].handler.error(this.format(sender, message));
 	}
 };

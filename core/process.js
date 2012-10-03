@@ -1,19 +1,3 @@
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var core = require("./core")();
+console.log("PROCESS FORKED!!!!");

@@ -11,7 +11,7 @@ var Settings = Class.Inherit("Settings", Object, function (name) {
 	Class.Construct(this, name);
 
 	this.settings = {};
-	this.path = { base : path.dirname(process.argv[1]), config : "./prism.conf", handlers : "./collectors/", use : "./system/" };
+	this.path = { base : path.dirname(process.argv[1]), config : "./prism.conf", core : "./core/", handlers : "./collectors/", use : "./system/" };
 			
 	return this;
 });
@@ -50,6 +50,7 @@ Settings.prototype.load = function (configPath) {
    				this[property] = settings[property];
         
 			this.path.config = this.resolve(configPath);
+			this.path.core = this.resolve(this.path.core);
 			this.path.handlers = this.resolve(this.path.handlers);
 			this.path.use = this.resolve(this.path.use);
 			return true;

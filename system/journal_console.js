@@ -16,7 +16,7 @@ var ConsoleLog = Class.Inherit("ConsoleLog", Object, function (name) {
 
 ConsoleLog.prototype.configure = function (settings) {
 
-	console.log(settings);
+	//console.log(settings);
 };
 
 ConsoleLog.prototype.information = function(message) {

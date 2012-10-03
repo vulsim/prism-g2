@@ -11,13 +11,9 @@ require("./core/settings").settings.load();
 
 require("./core/journal").journal.configure(require("./core/settings").settings.core.journal);
 
-require("./core/journal").journal.information(require("./core/settings").settings, 1, "Boot up done");
+require("./core/supervisor").supervisor.configure(require("./core/settings").settings.core.process);
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//var supervisor = require("./core/supervisor");
-//supervisor.apply(settings);
-//supervisor.startAll();	
+require("./core/supervisor").supervisor.start();
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
