@@ -36,7 +36,7 @@ Core.prototype.bind = function () {
 
 	try {
 		this.rpc = new Rpc("rpc");
-		this.rpc.listen(this.settings.uuid, util.format("tcp://%s:%d", this.settings.address, this.settings.port), function (node_uuid, method, data, response) {
+		this.rpc.listen(this.settings.uuid, util.format("tcp://%s:%d", this.settings.address, this.settings.port), function (node_uuid, method, data, response) {			
 			try {
 				var handler = that.rpc_handler[method];
 				if (handler) {
@@ -207,15 +207,22 @@ Core.prototype.rpc_handler = {
 	},
 
 	"cread": function (node_uuid, data, response) {
-		try {			
+		try {	
 			var node = this.getNodeByUUID(node_uuid, true);			
 			var channel = util.format("%s,%s", data.group, data.channel);
 
 			for (var index in this.nodes) {
 				if (this.nodes[index].channels.indexOf(channel) >= 0) {
 					this.rpc.send(this.nodes[index].uuid, "cread", data, response);
-					break;
+					return;
 				}
+			}
+
+			if (response) {
+				response({
+					"status":Type.Status["FAIL"],
+					"error":"Channel is not published"
+				});
 			}
 		} catch (e) {
 			journal.error(this, e.stack.toString());
@@ -230,12 +237,60 @@ Core.prototype.rpc_handler = {
 			for (var index in this.nodes) {
 				if (this.nodes[index].channels.indexOf(channel) >= 0) {
 					this.rpc.send(this.nodes[index].uuid, "cwrite", data, response);
-					break;
+					return;
 				}
+			}
+
+			if (response) {
+				response({
+					"status":Type.Status["FAIL"],
+					"error":"No channel to write"
+				});
 			}
 		} catch (e) {
 			journal.error(this, e.stack.toString());
 		}			
+	},
+
+	"cpub": function (node_uuid, data, response) {
+		try {
+			var node = this.getNodeByUUID(node_uuid, true);			
+			var channel = util.format("%s,%s", data.group, data.channel);
+
+			for (var index in this.nodes) {
+				if (this.nodes[index].uuid != node_uuid && this.nodes[index].channels.indexOf(channel) >= 0) {
+					if (response) {
+						response({
+							"status":Type.Status["FAIL"],
+							"error":"Channels can't be overlapped"
+						});
+					}					
+					return;
+				}
+			}
+
+			if (node.channels.indexOf(channel) < 0) {
+				node.channels.push(channel);
+
+				if (node.groups.indexOf(data.group) < 0) {
+					node.groups.push(data.group);
+				}
+			}
+
+			for (var index in this.nodes) {
+				if (this.nodes[index].uuid != node_uuid && ((this.nodes[index].subscribe.groups.indexOf(data.group) >= 0) || (this.nodes[index].subscribe.channels.indexOf(channel) >= 0))) {
+					this.rpc.send(this.nodes[index].uuid, "cpub", data);
+				}
+			}
+
+			if (response) {
+				response({
+					"status":Type.Status["OK"]
+				});
+			}
+		} catch (e) {
+			journal.error(this, e.stack.toString());
+		}		
 	},
 
 	"cpub": function (node_uuid, data, response) {

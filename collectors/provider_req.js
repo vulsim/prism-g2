@@ -35,18 +35,23 @@ Handler.prototype.initialize = function (done) {
 	    		done(err);
 	    	} else {
 		    	that.socket.on('message', function (json) {
-		    		var data = JSON.parse(json);
-
 		    		try {
+		    			var data = JSON.parse(json);
+
 		    			if (data.req && that.req[data.req]) {
 		    				that.req[data.req](data, function (err, rep) {
-		    					if (err) {
-		    						that.socket.send(JSON.stringify({
-		    							"rep":data.req, 
-		    							"error": e.toString()
-		    						}));
-		    					} else {
-		    						that.socket.send(JSON.stringify(rep));
+		    					try {
+		    						if (err) {
+			    						that.socket.send(JSON.stringify({
+			    							"rep":data.req, 
+			    							"error": err.toString()
+			    						}));
+			    					} else {
+			    						that.socket.send(JSON.stringify(rep));
+			    					}
+		    					} catch (e) {
+		    						that.journal.error(e.toString());
+		    						that.socket.send(JSON.stringify({"error": "Internal server error"}));
 		    					}
 		    				});
 		    			} else {
@@ -99,7 +104,6 @@ Handler.prototype.req = {
 
 		that.core.glist(function (err, groups) {
 			if (err) {
-				that.journal.error(err.toString());
 				cb(new Error("Error occured when processed request"));
 			} else {
 				cb(null, {
@@ -116,7 +120,6 @@ Handler.prototype.req = {
 
 		that.core.clist(function (err, channels) {
 			if (err) {
-				that.journal.error(err.toString());
 				cb(new Error("Error occured when processed request"));
 			} else {
 				var group = (data.group) ? data.group : null;
@@ -155,7 +158,6 @@ Handler.prototype.req = {
 		if (data.group && data.channel) {
 			that.core.cread(data.group, data.channel, function (err, group, channel, value) {
 				if (err) {
-					that.journal.error(err.toString());
 					cb(new Error("Error occured when processed request"));
 				} else {
 					cb(null, {
@@ -178,7 +180,6 @@ Handler.prototype.req = {
 		if (data.group && data.channel && data.value) {
 			that.core.cwrite(data.group, data.channel, data.value, function (err, group, channel, value) {
 				if (err) {
-					that.journal.error(err.toString());
 					cb(new Error("Error occured when processed request"));
 				} else {
 					cb(null, {
