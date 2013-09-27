@@ -270,6 +270,24 @@ Collector.prototype.core = {
 		}			
 	},
 
+	"cupub": function(group, channel, value, cb) {
+		
+		var that = this.that;
+
+		try {
+			that.rpc.send(that.master.uuid, "cupub", {"group":group, "channel":channel}, function (data) {
+				try {
+					BridgeCall(data, that.instance, null, cb);
+				} catch (e) {
+					journal.error(that, e.stack.toString());
+					SimpleCall(that.instance, e, cb);					
+				}
+			});
+		} catch (e) {
+			journal.error(that, e.stack.toString());
+		}			
+	},
+
 	"csub": function(group, channel, cb) {
 		
 		var that = this.that;
@@ -397,6 +415,14 @@ Collector.prototype.rpc_handler = {
 	"cpub": function (node_uuid, data) {
 		try {
 			this.instance.cpub({"group":data.group, "channel":data.channel, "value":data.value});			
+		} catch (e) {
+			journal.error(this, e.stack.toString());
+		}		
+	},
+
+	"cupub": function (node_uuid, data) {
+		try {
+			this.instance.cupub({"group":data.group, "channel":data.channel});			
 		} catch (e) {
 			journal.error(this, e.stack.toString());
 		}		

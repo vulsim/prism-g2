@@ -293,7 +293,7 @@ Core.prototype.rpc_handler = {
 		}		
 	},
 
-	"cpub": function (node_uuid, data, response) {
+	"cupub": function (node_uuid, data, response) {
 		try {
 			var node = this.getNodeByUUID(node_uuid, true);			
 			var channel = util.format("%s,%s", data.group, data.channel);
@@ -310,17 +310,23 @@ Core.prototype.rpc_handler = {
 				}
 			}
 
-			if (node.channels.indexOf(channel) < 0) {
-				node.channels.push(channel);
+			var index = node.channels.indexOf(channel);
 
-				if (node.groups.indexOf(data.group) < 0) {
-					node.groups.push(data.group);
-				}
+			if (index >= 0) {
+				node.channels.splice(index, 1);
+			} else {
+				if (response) {
+						response({
+							"status":Type.Status["FAIL"],
+							"error":"Channel is not published"
+						});
+					}					
+					return;
 			}
 
 			for (var index in this.nodes) {
 				if (this.nodes[index].uuid != node_uuid && ((this.nodes[index].subscribe.groups.indexOf(data.group) >= 0) || (this.nodes[index].subscribe.channels.indexOf(channel) >= 0))) {
-					this.rpc.send(this.nodes[index].uuid, "cpub", data);
+					this.rpc.send(this.nodes[index].uuid, "cupub", data);
 				}
 			}
 
