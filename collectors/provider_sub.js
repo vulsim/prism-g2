@@ -115,8 +115,8 @@ Handler.prototype.cpub = function (data) {
 
 	try {
 		var json = JSON.stringify(data);
-		this.socket.send(util.format("%s,%s p %s", data.group.toString(), data.channel.toString(), json));
-		this.socket.send(util.format("%s p %s", data.group.toString(), json));
+		this.socket.send(util.format("%s,%s pub %s", data.group.toString(), data.channel.toString(), json));
+		this.socket.send(util.format("%s pub %s", data.group.toString(), json));
 	} catch (e) {
 		this.journal.error(e.toString());
 	}
@@ -128,8 +128,8 @@ Handler.prototype.cupub = function (data) {
 
 	try {
 		var json = JSON.stringify(data);
-		this.socket.send(util.format("%s,%s u %s", data.group.toString(), data.channel.toString(), json));
-		this.socket.send(util.format("%s u %s", data.group.toString(), json));
+		this.socket.send(util.format("%s,%s upub %s", data.group.toString(), data.channel.toString(), json));
+		this.socket.send(util.format("%s upub %s", data.group.toString(), json));
 	} catch (e) {
 		this.journal.error(e.toString());
 	}

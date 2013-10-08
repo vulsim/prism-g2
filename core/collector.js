@@ -270,7 +270,7 @@ Collector.prototype.core = {
 		}			
 	},
 
-	"cupub": function(group, channel, value, cb) {
+	"cupub": function(group, channel, cb) {
 		
 		var that = this.that;
 
