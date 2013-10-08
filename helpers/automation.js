@@ -36,7 +36,7 @@ Automation.prototype.check = function (condition, defaultValue, cb) {
 								cb(false);
 							}
 						} catch (e) {
-							that.journal.error(e.toString());
+							that.journal.error(e.stack.toString());
 						}
 					});
 				} else if (element.and) {
@@ -53,13 +53,13 @@ Automation.prototype.check = function (condition, defaultValue, cb) {
 									cb(false);
 								}
 							} catch (e) {
-								that.journal.error(e.toString());
+								that.journal.error(e.stack.toString());
 							}
 						});
 					} else {
 						cb(lastValue);	
 					}
-				} else if (operand.or){
+				} else if (element.or){
 					if (index == 0) {
 						lastValue = false;
 					}
@@ -73,7 +73,7 @@ Automation.prototype.check = function (condition, defaultValue, cb) {
 									iterator(element, index + 1, false, cb);
 								}
 							} catch (e) {
-								that.journal.error(e.toString());
+								that.journal.error(e.stack.toString());
 							}
 						});
 					} else {
@@ -83,12 +83,12 @@ Automation.prototype.check = function (condition, defaultValue, cb) {
 					cb(lastValue);
 				}
 			} catch (e) {
-				that.journal.error(e.toString());
+				that.journal.error(e.stack.toString());
 			}
 		};
 		iterator(condition, 0, defaultValue, cb);
 	} catch (e) {
-		that.journal.error(e.toString());
+		that.journal.error(e.stack.toString());
 	}
 };
 
@@ -108,7 +108,7 @@ Automation.prototype.linear = function (condition, cb) {
 							try {
 								iterator(element, index + 1, result, cb);								
 							} catch (e) {
-								that.journal.error(e.toString());
+								that.journal.error(e.stack.toString());
 							}
 						});
 					} else {
@@ -120,7 +120,7 @@ Automation.prototype.linear = function (condition, cb) {
 							try {
 								iterator(element, index + 1, result, cb);
 							} catch (e) {
-								that.journal.error(e.toString());
+								that.journal.error(e.stack.toString());
 							}
 						});
 					} else {
@@ -130,12 +130,12 @@ Automation.prototype.linear = function (condition, cb) {
 					cb(result);
 				}
 			} catch (e) {
-				that.journal.error(e.toString());
+				that.journal.error(e.stack.toString());
 			}
 		};
 		iterator(condition, 0, [], cb);
 	} catch (e) {
-		that.journal.error(e.toString());
+		that.journal.error(e.stack.toString());
 	}
 };
 
@@ -148,7 +148,7 @@ Automation.prototype.value = function (group, channel, cb) {
 			cb((err) ? null : value);
 		});
 	} catch (e) {
-		that.journal.error(e.toString());
+		that.journal.error(e.stack.toString());
 	}
 };
 

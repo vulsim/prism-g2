@@ -158,7 +158,7 @@ Handler.prototype.req = {
 		if (data.group && data.channel) {
 			that.core.cread(data.group, data.channel, function (err, group, channel, value) {
 				if (err) {
-					cb(new Error("Error occured when processed request"));
+					cb(err);
 				} else {
 					cb(null, {
 						"rep": "cread",
@@ -180,7 +180,7 @@ Handler.prototype.req = {
 		if (data.group && data.channel && data.value) {
 			that.core.cwrite(data.group, data.channel, data.value, function (err, group, channel, value) {
 				if (err) {
-					cb(new Error("Error occured when processed request"));
+					cb(err);
 				} else {
 					cb(null, {
 						"rep": "cwrite",

@@ -105,18 +105,19 @@ Handler.prototype.operate = function (operate, cb) {
 				if (operate[index]) {					
 					that.automation.check(operate[index].lock, false, function (result) {
 						try {
-							if (result) {
+							if (!result) {
 								that.core.cwrite(operate[index].group, operate[index].channel, operate[index].value, function (err, group, channel, value) {
 									try {
 										if (err) {
 											cb(new Error("Operation can not be completed"));
 										} else {
-											setInterval(function() {
+											var delayTimerId = setInterval(function() {
+												clearInterval(delayTimerId);
 												iterator(index + 1, cb);
 											}, operate[index].delay);
 										}
 									} catch (e) {
-										that.journal.error(e.toString());
+										that.journal.error(e.stack.toString());
 										cb(e);
 									}
 								});
@@ -124,7 +125,7 @@ Handler.prototype.operate = function (operate, cb) {
 								cb(new Error("Operation can not be completed"));
 							}
 						} catch (e) {
-							that.journal.error(e.toString());
+							that.journal.error(e.stack.toString());
 							cb(e);
 						}						
 					});
@@ -132,13 +133,13 @@ Handler.prototype.operate = function (operate, cb) {
 					cb(null);
 				}
 			} catch (e) {
-				that.journal.error(e.toString());
+				that.journal.error(e.stack.toString());
 				cb(e);
 			}
 		};
 		iterator(0, cb);
 	} catch (e) {
-		that.journal.error(e.toString());
+		that.journal.error(e.stack.toString());
 		cb(e);
 	}
 };
@@ -175,7 +176,7 @@ Handler.prototype.cwrite = function (data, responce) {
 	try {
 		if (data.group == that.group && data.channel == that.channel) {
 			for (var index in that.states) {
-				if (that.states[index].state == data.state) {
+				if (that.states[index].state == data.value) {					
 					that.automation.check(that.states[index].lock, false, function (result) {
 						try {
 							if (result) {
@@ -184,28 +185,32 @@ Handler.prototype.cwrite = function (data, responce) {
 								that.operate(that.states[index].operate, function (err) {
 									try {
 										if (err) {
-											responce(e);
+											responce(err);
 										} else {
-											that.automation.getState(function (state) {
+											that.getState(function (state) {
 												try {
-													responce((state) ? state : new Error("Impossible to determine the resulting state")); 
+													if (state) {
+														responce(null, state);
+													} else {
+														responce(new Error("Impossible to determine the resulting state")); 
+													}													
 												} catch (e) {
-													that.journal.error(e.toString());
+													that.journal.error(e.stack.toString());
 													responce(e);
 												}
 											});
 										}
 									} catch (e) {
-										that.journal.error(e.toString());
+										that.journal.error(e.stack.toString());
 										responce(e);
 									}
 								});
 							}
 						} catch (e) {
-							that.journal.error(e.toString());
+							that.journal.error(e.stack.toString());
 							responce(e);
 						}
-					});
+					});		
 					return;
 				}
 			}
@@ -214,7 +219,7 @@ Handler.prototype.cwrite = function (data, responce) {
 			responce(new Error("Malformed data"));
 		}
 	} catch (e) {
-		that.journal.error(e.toString());
+		that.journal.error(e.stack.toString());
 		responce(e);
 	}
 };

@@ -1,0 +1,670 @@
+{
+	"core" : {
+		"uuid" : "550e8400-e29b-41d4-a716-446655440000",
+		"listen" : "0.0.0.0:45450"
+	},
+
+	"journal" : [
+		{
+			"use" : "journal_console",
+			"verbosity" : "10",
+			"configure" : {
+
+			}
+		}
+	],
+
+	"collector" : [
+		{
+			"group" : "io-advbiodaq_0",
+			"handler" : "io_advbiodaq",
+			"configure" : {				
+
+				"type" : "InstantDoCtrl",				
+				"device" : "PCI-1753,BID#8",
+				"update_interval" : 500,
+
+				"channels" : {
+					"0,0" : {"group" : "io", "channel" : "di-sn-238"},
+					"0,1" : {"group" : "io", "channel" : "di-sn-242"},
+					"0,2" : {"group" : "io", "channel" : "di-sn-244"},
+					"0,3" : {"group" : "io", "channel" : "di-sn-339"},
+					"0,4" : {"group" : "io", "channel" : "di-111"},
+					"0,5" : {"group" : "io", "channel" : "di-113"},
+
+					"1,0" : {"group" : "io", "channel" : "di-ol-910"},
+					"1,1" : {"group" : "io", "channel" : "di-ol-908"},
+					"1,2" : {"group" : "io", "channel" : "di-ol-916"},
+					"1,3" : {"group" : "io", "channel" : "di-ol-912"},
+
+
+					"3,0" : {"group" : "io", "channel" : "do-ru1-166"},
+					"3,1" : {"group" : "io", "channel" : "do-ru1-167"},
+					"3,2" : {"group" : "io", "channel" : "do-v1-57"},
+					"3,3" : {"group" : "io", "channel" : "do-v1-58"},
+
+					"3,6" : {"group" : "io", "channel" : "do-ru2-166"},
+					"3,7" : {"group" : "io", "channel" : "do-ru2-167"},
+					"4,0" : {"group" : "io", "channel" : "do-v2-57"},
+					"4,1" : {"group" : "io", "channel" : "do-v2-58"},
+
+					"4,4" : {"group" : "io", "channel" : "do-ru3-166"},
+					"4,5" : {"group" : "io", "channel" : "do-ru3-167"},
+					"4,6" : {"group" : "io", "channel" : "do-v3-57"},
+					"4,7" : {"group" : "io", "channel" : "do-v3-58"},
+
+					"5,2" : {"group" : "io", "channel" : "do-rab-9"},
+					"5,3" : {"group" : "io", "channel" : "do-rab-33"},
+					"5,4" : {"group" : "io", "channel" : "do-rez-9"},
+					"5,5" : {"group" : "io", "channel" : "do-rez-33"},
+					"5,6" : {"group" : "io", "channel" : "do-ol-9"},
+					"5,7" : {"group" : "io", "channel" : "do-ol-33"},
+
+					"6,0" : {"group" : "io", "channel" : "do-ul1-166"},
+					"6,1" : {"group" : "io", "channel" : "do-ul1-167"},
+					"6,2" : {"group" : "io", "channel" : "do-ul1-168"},
+					"6,3" : {"group" : "io", "channel" : "do-ul1-169"},
+					"6,4" : {"group" : "io", "channel" : "do-ul1-170"},
+					"6,5" : {"group" : "io", "channel" : "do-ul1-171"},
+
+					"7,0" : {"group" : "io", "channel" : "do-ul2-166"},
+					"7,1" : {"group" : "io", "channel" : "do-ul2-167"},
+					"7,2" : {"group" : "io", "channel" : "do-ul2-168"},
+					"7,3" : {"group" : "io", "channel" : "do-ul2-169"},
+					"7,4" : {"group" : "io", "channel" : "do-ul2-170"},
+					"7,5" : {"group" : "io", "channel" : "do-ul2-171"},
+
+					"8,0" : {"group" : "io", "channel" : "do-ul3-166"},
+					"8,1" : {"group" : "io", "channel" : "do-ul3-167"},
+					"8,2" : {"group" : "io", "channel" : "do-ul3-168"},
+					"8,3" : {"group" : "io", "channel" : "do-ul3-169"},
+					"8,4" : {"group" : "io", "channel" : "do-ul3-170"},
+					"8,5" : {"group" : "io", "channel" : "do-ul3-171"},
+
+					"9,0" : {"group" : "io", "channel" : "do-ul4-166"},
+					"9,1" : {"group" : "io", "channel" : "do-ul4-167"},
+					"9,2" : {"group" : "io", "channel" : "do-ul4-168"},
+					"9,3" : {"group" : "io", "channel" : "do-ul4-169"},
+					"9,4" : {"group" : "io", "channel" : "do-ul4-170"},
+					"9,5" : {"group" : "io", "channel" : "do-ul4-171"},
+
+					"10,0" : {"group" : "io", "channel" : "do-ul5-166"},
+					"10,1" : {"group" : "io", "channel" : "do-ul5-167"},
+					"10,2" : {"group" : "io", "channel" : "do-ul5-168"},
+					"10,3" : {"group" : "io", "channel" : "do-ul5-169"},
+					"10,4" : {"group" : "io", "channel" : "do-ul5-170"},
+					"10,5" : {"group" : "io", "channel" : "do-ul5-171"},
+
+					"11,0" : {"group" : "io", "channel" : "do-zap-166"},
+					"11,1" : {"group" : "io", "channel" : "do-zap-167"},
+					"11,2" : {"group" : "io", "channel" : "do-zap-168"},
+					"11,3" : {"group" : "io", "channel" : "do-zap-169"}
+				}
+
+			}			
+		},
+		{
+			"group" : "io-advbiodaq_1",
+			"handler" : "io_advbiodaq",
+			"configure" : {				
+
+				"type" : "InstantDiCtrl",				
+				"device" : "PCI-1753,BID#0",
+				"update_interval" : 500,
+
+				"channels" : {
+					"6,0" : {"group" : "io", "channel" : "di-ul5-708"},
+					"6,1" : {"group" : "io", "channel" : "di-ul5-710"},
+					"6,2" : {"group" : "io", "channel" : "di-ul5-712"},
+					"6,3" : {"group" : "io", "channel" : "di-ul5-714"},
+					"6,4" : {"group" : "io", "channel" : "di-ul5-716"},
+					"6,5" : {"group" : "io", "channel" : "di-ul5-719"},
+					"6,6" : {"group" : "io", "channel" : "di-ul5-n01"},
+
+					"7,0" : {"group" : "io", "channel" : "di-ul1-708"},
+					"7,1" : {"group" : "io", "channel" : "di-ul1-710"},
+					"7,2" : {"group" : "io", "channel" : "di-ul1-712"},
+					"7,3" : {"group" : "io", "channel" : "di-ul1-714"},
+					"7,4" : {"group" : "io", "channel" : "di-ul1-716"},
+					"7,5" : {"group" : "io", "channel" : "di-ul1-719"},
+					"7,6" : {"group" : "io", "channel" : "di-ul1-n01"},
+
+					"8,0" : {"group" : "io", "channel" : "di-ul2-708"},
+					"8,1" : {"group" : "io", "channel" : "di-ul2-710"},
+					"8,2" : {"group" : "io", "channel" : "di-ul2-712"},
+					"8,3" : {"group" : "io", "channel" : "di-ul2-714"},
+					"8,4" : {"group" : "io", "channel" : "di-ul2-716"},
+					"8,5" : {"group" : "io", "channel" : "di-ul2-719"},
+					"8,6" : {"group" : "io", "channel" : "di-ul2-n01"},
+
+					"9,0" : {"group" : "io", "channel" : "di-ul4-708"},
+					"9,1" : {"group" : "io", "channel" : "di-ul4-710"},
+					"9,2" : {"group" : "io", "channel" : "di-ul4-712"},
+					"9,3" : {"group" : "io", "channel" : "di-ul4-714"},
+					"9,4" : {"group" : "io", "channel" : "di-ul4-716"},
+					"9,5" : {"group" : "io", "channel" : "di-ul4-719"},
+					"9,6" : {"group" : "io", "channel" : "di-ul4-n01"},
+
+					"10,0" : {"group" : "io", "channel" : "di-ul3-708"},
+					"10,1" : {"group" : "io", "channel" : "di-ul3-710"},
+					"10,2" : {"group" : "io", "channel" : "di-ul3-712"},
+					"10,3" : {"group" : "io", "channel" : "di-ul3-714"},
+					"10,4" : {"group" : "io", "channel" : "di-ul3-716"},
+					"10,5" : {"group" : "io", "channel" : "di-ul3-719"},
+					"10,6" : {"group" : "io", "channel" : "di-ul3-n01"},
+
+					"11,0" : {"group" : "io", "channel" : "di-zap-708"},
+					"11,1" : {"group" : "io", "channel" : "di-zap-710"},
+					"11,2" : {"group" : "io", "channel" : "di-zap-712"},
+					"11,3" : {"group" : "io", "channel" : "di-zap-n01"},
+
+					"0,0" : {"group" : "io", "channel" : "di-v1-86"},
+					"0,1" : {"group" : "io", "channel" : "di-v1-111"},
+					"0,2" : {"group" : "io", "channel" : "di-v1-106"},
+					"0,3" : {"group" : "io", "channel" : "di-v1-67"},
+					"0,4" : {"group" : "io", "channel" : "di-ru1-708"},
+					"0,5" : {"group" : "io", "channel" : "di-ru1-710"},
+					"0,6" : {"group" : "io", "channel" : "di-ru1-712"},
+					"0,7" : {"group" : "io", "channel" : "di-ka1-n02"},
+
+					"1,0" : {"group" : "io", "channel" : "di-pa1-1003"},
+					"1,1" : {"group" : "io", "channel" : "di-pa1-911"},
+					"1,3" : {"group" : "io", "channel" : "di-v2-86"},
+					"1,4" : {"group" : "io", "channel" : "di-v2-111"},
+					"1,5" : {"group" : "io", "channel" : "di-v2-106"},
+					"1,6" : {"group" : "io", "channel" : "di-v2-67"},
+					"1,7" : {"group" : "io", "channel" : "di-ru2-708"},
+					
+					"2,0" : {"group" : "io", "channel" : "di-ru2-710"},
+					"2,1" : {"group" : "io", "channel" : "di-ru2-712"},
+					"2,2" : {"group" : "io", "channel" : "di-ka2-n02"},
+					"2,3" : {"group" : "io", "channel" : "di-pa2-1003"},
+					"2,4" : {"group" : "io", "channel" : "di-pa2-911"},
+					"2,6" : {"group" : "io", "channel" : "di-v3-86"},
+					"2,7" : {"group" : "io", "channel" : "di-v3-111"},
+
+					"3,0" : {"group" : "io", "channel" : "di-v3-106"},
+					"3,1" : {"group" : "io", "channel" : "di-v3-67"},
+					"3,2" : {"group" : "io", "channel" : "di-ru3-708"},
+					"3,3" : {"group" : "io", "channel" : "di-ru3-710"},
+					"3,4" : {"group" : "io", "channel" : "di-ru3-712"},
+					"3,5" : {"group" : "io", "channel" : "di-ka3-n02"},
+					"3,6" : {"group" : "io", "channel" : "di-pa3-1003"},
+					"3,7" : {"group" : "io", "channel" : "di-pa3-911"},
+
+					"4,1" : {"group" : "io", "channel" : "di-rab-910"},
+					"4,2" : {"group" : "io", "channel" : "di-rab-908"},
+					"4,3" : {"group" : "io", "channel" : "di-rab-916"},
+					"4,4" : {"group" : "io", "channel" : "di-rab-912"},
+					"4,5" : {"group" : "io", "channel" : "di-tsn1-ts71"},
+					"4,6" : {"group" : "io", "channel" : "di-tn1-918"},
+					"4,7" : {"group" : "io", "channel" : "di-tn1-920"},
+
+					"5,0" : {"group" : "io", "channel" : "di-rez-902"},
+					"5,1" : {"group" : "io", "channel" : "di-rez-900"},
+					"5,2" : {"group" : "io", "channel" : "di-rez-906"},
+					"5,3" : {"group" : "io", "channel" : "di-rez-904"},
+					"5,4" : {"group" : "io", "channel" : "di-tsn2-ts71"},
+					"5,5" : {"group" : "io", "channel" : "di-tn2-918"},
+					"5,6" : {"group" : "io", "channel" : "di-tn2-741"}					
+				}
+			}			
+		},
+		{
+			"group" : "provider-req_0",
+			"handler" : "provider_req",
+			"configure" : {
+				"listen" : "0.0.0.0:1233"			
+			}
+		},
+		{
+			"group" : "provider-sub_0",
+			"handler" : "provider_sub",
+			"configure" : {
+				"listen" : "0.0.0.0:1234",
+				"subscribe" : {
+					"groups" : ["io"],
+					"channels" : []
+				}				
+			}
+		},
+
+		{
+			"group" : "automation-ctrl_0",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "leadin1-ctrl",
+				"states" : [
+					{
+						"state" : "A",
+						"conform" : {"group" : "io", "channel" : "di-rab-908", "value" : "1"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-rab-916", "value" : "0"},
+								{"group" : "io", "channel" : "di-rab-910", "value" : "1"},
+								{"group" : "io", "channel" : "di-rab-912", "value" : "1"},
+								{"group" : "auto", "channel" : "leadin2-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-rab-9", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-rab-9", "value" : "0", "lock" : {}, "delay" : 1000 }
+						]
+					},
+					{
+						"state" : "B",
+						"conform" : {"group" : "io", "channel" : "di-rab-908", "value" : "0"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-rab-916", "value" : "0"},
+								{"group" : "io", "channel" : "di-rab-910", "value" : "1"},
+								{"group" : "io", "channel" : "di-rab-912", "value" : "1"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-rab-33", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-rab-33", "value" : "0", "lock" : {}, "delay" : 1000 }
+						]
+					}
+				]
+			}
+		},
+		{
+			"group" : "automation-ctrl_0",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "leadin2-ctrl",
+				"states" : [
+					{
+						"state" : "A",
+						"conform" : {"group" : "io", "channel" : "di-rez-900", "value" : "1"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-rab-906", "value" : "0"},
+								{"group" : "io", "channel" : "di-rab-902", "value" : "1"},
+								{"group" : "io", "channel" : "di-rab-904", "value" : "1"},
+								{"group" : "auto", "channel" : "leadin1-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-rez-9", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-rez-9", "value" : "0", "lock" : {}, "delay" : 1000 }
+						]
+					},
+					{
+						"state" : "B",
+						"conform" : {"group" : "io", "channel" : "di-rez-900", "value" : "0"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-rab-906", "value" : "0"},
+								{"group" : "io", "channel" : "di-rab-902", "value" : "1"},
+								{"group" : "io", "channel" : "di-rab-904", "value" : "1"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-rez-33", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "channel" : "do-rez-33", "value" : "0", "lock" : {}, "delay" : 1000 }
+						]
+					}
+				]
+			}
+		},
+
+		{
+			"group" : "automation-ctrl_1",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "rect1-ka-ctrl",
+				"states" : [
+					{
+						"state" : "A",
+						"conform" : {"group" : "io", "channel" : "di-ru1-712", "value" : "0"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ru1-710", "value" : "1"},
+								{"group" : "io", "channel" : "di-ru1-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-ka1-n02", "value" : "1"}
+							]
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-ru1-166", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ru1-166", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					},
+					{
+						"state" : "B",
+						"conform" : {"group" : "io", "channel" : "di-ru1-712", "value" : "1"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ru1-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-ka1-n02", "value" : "1"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-ru1-167", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ru1-167", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					}
+				]
+			}
+		},
+		{
+			"group" : "automation-ctrl_1",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "rect1-pa-ctrl",
+				"states" : [
+					{
+						"state" : "A",
+						"conform" : {"group" : "io", "channel" : "di-pa1-911", "value" : "1"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-pa1-1003", "value" : "1"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-v1-57", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-v1-57", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					},
+					{
+						"state" : "B",
+						"conform" : {"group" : "io", "channel" : "di-pa1-911", "value" : "0"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-pa1-1003", "value" : "1"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-v1-58", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-v1-58", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					}
+				]
+			}
+		},
+
+		{
+			"group" : "automation-ctrl_1",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "rect2-ka-ctrl",
+				"states" : [
+					{
+						"state" : "A",
+						"conform" : {"group" : "io", "channel" : "di-ru2-712", "value" : "0"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ru2-710", "value" : "1"},
+								{"group" : "io", "channel" : "di-ru2-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-ka2-n02", "value" : "1"}
+							]
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-ru2-166", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ru2-166", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					},
+					{
+						"state" : "B",
+						"conform" : {"group" : "io", "channel" : "di-ru2-712", "value" : "1"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ru2-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-ka2-n02", "value" : "1"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-ru2-167", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ru2-167", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					}
+				]
+			}
+		},
+		{
+			"group" : "automation-ctrl_1",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "rect2-pa-ctrl",
+				"states" : [
+					{
+						"state" : "A",
+						"conform" : {"group" : "io", "channel" : "di-pa2-911", "value" : "1"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-pa2-1003", "value" : "1"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-v2-57", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-v2-57", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					},
+					{
+						"state" : "B",
+						"conform" : {"group" : "io", "channel" : "di-pa2-911", "value" : "0"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-pa2-1003", "value" : "1"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-v2-58", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-v2-58", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					}
+				]
+			}
+		},
+
+		{
+			"group" : "automation-ctrl_1",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "rect3-ka-ctrl",
+				"states" : [
+					{
+						"state" : "A",
+						"conform" : {"group" : "io", "channel" : "di-ru3-712", "value" : "0"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ru3-710", "value" : "1"},
+								{"group" : "io", "channel" : "di-ru3-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-ka3-n02", "value" : "1"}
+							]
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-ru3-166", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ru3-166", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					},
+					{
+						"state" : "B",
+						"conform" : {"group" : "io", "channel" : "di-ru3-712", "value" : "1"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ru3-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-ka3-n02", "value" : "1"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-ru3-167", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ru3-167", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					}
+				]
+			}
+		},
+		{
+			"group" : "automation-ctrl_1",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "rect3-pa-ctrl",
+				"states" : [
+					{
+						"state" : "A",
+						"conform" : {"group" : "io", "channel" : "di-pa3-911", "value" : "1"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-pa3-1003", "value" : "1"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-v3-57", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-v3-57", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					},
+					{
+						"state" : "B",
+						"conform" : {"group" : "io", "channel" : "di-pa3-911", "value" : "0"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-pa3-1003", "value" : "1"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-v3-58", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-v3-58", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					}
+				]
+			}
+		},
+
+		{
+			"group" : "automation-ctrl_2",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "lsw1-qs-ctrl",
+				"states" : [
+					{
+						"state" : "A",
+						"conform" : {"group" : "io", "channel" : "di-ul1-710", "value" : "0"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ul1-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-ul1-n01", "value" : "1"},
+								{"group" : "auto", "channel" : "lsw1-qf-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-ul1-168", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ul1-168", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					},
+					{
+						"state" : "B",
+						"conform" : {"group" : "io", "channel" : "di-ul1-710", "value" : "1"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ul1-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-ul1-n01", "value" : "1"},
+								{"group" : "auto", "channel" : "lsw1-qf-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-ul1-169", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ul1-169", "value" : "0", "lock" : {}, "delay" : 2000 }
+						]
+					}
+				]
+			}
+		},
+		{
+			"group" : "automation-ctrl_2",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "lsw1-qf-ctrl",
+				"states" : [
+					{
+						"state" : "A",
+						"conform" : {"group" : "io", "channel" : "di-ul1-712", "value" : "0"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ul1-708", "value" : "0"},
+								{"group" : "io", "channel" : "di-ul1-n01", "value" : "1"},
+								{"group" : "auto", "channel" : "lsw1-qs-ctrl", "value" : "B"},
+								{"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-ul1-168", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ul1-168", "value" : "0", "lock" : {}, "delay" : 1000 }
+						]
+					},
+					{
+						"state" : "B",
+						"conform" : {"group" : "io", "channel" : "di-ul1-712", "value" : "1"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ul1-708", "value" : "0"},
+								{"group" : "io", "channel" : "di-ul1-n01", "value" : "1"},
+								{"group" : "auto", "channel" : "lsw1-qs-ctrl", "value" : "B"},
+								{"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-ul1-169", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ul1-169", "value" : "0", "lock" : {}, "delay" : 1000 }
+						]
+					}
+				]
+			}
+		},
+		{
+			"group" : "automation-ctrl_2",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "lsw1-spare-ctrl",
+				"states" : [
+					{
+						"state" : "A",
+						"conform" : {"group" : "io", "channel" : "di-ul1-719", "value" : "0"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ul1-708", "value" : "0"},
+								{"group" : "io", "channel" : "di-ul1-n01", "value" : "1"},
+								{"group" : "auto", "channel" : "lsw1-qs-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw1-qf-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-ul1-170", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ul1-170", "value" : "0", "lock" : {}, "delay" : 1000 }
+						]
+					},
+					{
+						"state" : "B",
+						"conform" : {"group" : "io", "channel" : "di-ul1-719", "value" : "1"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ul1-708", "value" : "0"},
+								{"group" : "io", "channel" : "di-ul1-n01", "value" : "1"},
+								{"group" : "auto", "channel" : "lsw1-qs-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw1-qf-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{ "group" : "io", "channel" : "do-ul1-171", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ul1-171", "value" : "0", "lock" : {}, "delay" : 1000 }
+						]
+					}
+				]
+			}
+		}
+	]
+}

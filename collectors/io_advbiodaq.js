@@ -149,12 +149,12 @@ BioDaqHandler.prototype.cwrite = function (data, responce) {
 	var that = this;
 	
 	try {
-		var id = this.controllerData.list[data.group][data.channel];
-		
+		var id = this.controllerData.list[data.group][data.channel];		
+
 		if (id != undefined) {
-			var data = that.controller.ReadPort(parseInt(id.p)) & 0xff ^ (0x1 << id.c) & (parseInt(data.value) << id.c);
-			data = that.controller.ReadPort(parseInt(id.p), data);
-			responce(null, (data >> id.c) & 0x1);
+			var value = that.controller.ReadPort(parseInt(id.p)) & (0xff ^ (1 << id.c)) | (parseInt(data.value) << id.c);
+			value = that.controller.WritePort(parseInt(id.p), value);
+			responce(null, (value >> id.c) & 0x1);
 		} else {
 			var e = new Error("Can't write value to channel");
 			this.journal.error(util.format("\"%s\" id: %s; data:%s", e.toString(), id.toString(), this.controllerData.data.toString()));
