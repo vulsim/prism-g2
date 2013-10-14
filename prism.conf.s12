@@ -235,18 +235,16 @@
 			"configure" : {
 				"group" : "alarm",
 				"channel" : "leadin1-100",
-				"value" : "A Sample alarm message",
-				"states" : {
-					"on" : { "interval" : 500, "count" : 3, "conform" : {
+				"value" : "[A] Sample alarm message",
+				"interval" : 500,
+				"states" : [
+					{ "state" : "S", "count" : 3, "conform" : {
 
-						}
-					},
+					}},
+					{ "state" : "R", "count" : 3, "conform" : {
 
-					"off" : { "interval" : 500, "count" : 3, "conform" : {
-
-						}
-					}					
-				}
+					}}
+				]
 			}
 		},
 

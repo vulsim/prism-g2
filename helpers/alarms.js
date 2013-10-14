@@ -23,7 +23,7 @@ Alarms.prototype.set = function (alarm, message, cb) {
 	var that = this;
 
 	try {
-		var value = "unknown";
+		var value = "[U]";
 		
 		if (message) {
 			value = message;
@@ -31,9 +31,9 @@ Alarms.prototype.set = function (alarm, message, cb) {
 			value = that.messages[alarm];
 		}
 
-		that.core.cpub("alarm", alarm, value, function (e) {
+		that.core.cwrite("alarm", alarm + "-manual", value, function (e) {
 			if (e) {
-				cb(new Error("Alarm is not set"));
+				cb(new Error("Can't set alarm"));
 			} else {
 				cb();
 			}
@@ -49,7 +49,7 @@ Alarms.prototype.reset = function (alarm, cb) {
 	var that = this;
 
 	try {
-		that.core.cupub("alarm", alarm, function (e) {
+		that.core.cwrite("alarm", alarm + "-manual", "", function (e) {
 			if (err) {
 				cb(new Error("Can't reset alarm"));
 			} else {
