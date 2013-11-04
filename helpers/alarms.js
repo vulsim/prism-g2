@@ -27,7 +27,7 @@ Alarms.prototype.set = function (alarm, message, cb) {
 		
 		if (message) {
 			value = message;
-		} else  if (that.messages && that.messages[alarm]) {
+		} else if (that.messages && that.messages[alarm]) {
 			value = that.messages[alarm];
 		}
 

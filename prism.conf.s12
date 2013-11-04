@@ -249,6 +249,20 @@
 		},
 
 		{
+			"group" : "automation-reclosing_0",
+			"handler" : "auto_reclosing",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "lsw1-arm",				
+				"interval" : 1000,
+				"idle" : { },
+				"control" : { },
+				"operate" : [ ],
+				"alarms" : []
+			}
+		},
+
+		{
 			"group" : "automation-ctrl_0",
 			"handler" : "auto_control",
 			"configure" : {

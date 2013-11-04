@@ -1,6 +1,8 @@
 var Class = require("../core/class");
 var Object = require("../core/object");
 
+var Automation = require("../helpers/automation").Automation;
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var util = require("util");
