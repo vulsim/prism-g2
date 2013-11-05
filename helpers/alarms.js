@@ -24,22 +24,27 @@ Alarms.prototype.set = function (alarm, message, cb) {
 
 	try {
 		var value = "[U]";
-		
+				
 		if (message) {
 			value = message;
 		} else if (that.messages && that.messages[alarm]) {
 			value = that.messages[alarm];
 		}
 
-		that.core.cwrite("alarm", alarm + "-manual", value, function (e) {
-			if (e) {
-				cb(new Error("Can't set alarm"));
-			} else {
-				cb();
+		that.core.cwrite("alarm", alarm + "-manual", value, function (err, group, channel, value) {
+			try {
+				if (err) {
+					cb(new Error("Can't set alarm"));
+				} else {
+					cb();
+				}
+			} catch (e) {
+				that.journal.error(e.stack.toString());
+				cb(e);
 			}
 		});
 	} catch (e) {
-		that.journal.error(e.toString());
+		that.journal.error(e.stack.toString());
 		cb(e);
 	}
 };
@@ -49,11 +54,17 @@ Alarms.prototype.reset = function (alarm, cb) {
 	var that = this;
 
 	try {
-		that.core.cwrite("alarm", alarm + "-manual", "", function (e) {
-			if (err) {
-				cb(new Error("Can't reset alarm"));
-			} else {
-				cb();
+
+		that.core.cwrite("alarm", alarm + "-manual", "", function (err, group, channel, value) {
+			try {
+				if (err) {
+					cb(new Error("Can't reset alarm"));
+				} else {
+					cb();
+				}
+			} catch (e) {
+				that.journal.error(e.stack.toString());
+				cb(e);
 			}
 		});
 	} catch (e) {

@@ -109,7 +109,7 @@ Handler.prototype.operate = function (operate, cb) {
 								that.core.cwrite(operate[index].group, operate[index].channel, operate[index].value, function (err, group, channel, value) {
 									try {
 										if (err) {
-											cb(new Error("Operation cannot be completed"));
+											cb(new Error("Operation can not be completed"));
 										} else {
 											var delayTimerId = setInterval(function() {
 												clearInterval(delayTimerId);
@@ -122,7 +122,7 @@ Handler.prototype.operate = function (operate, cb) {
 									}
 								});
 							} else {
-								cb(new Error("Operation cannot be completed"));
+								cb(new Error("Operation can not be completed"));
 							}
 						} catch (e) {
 							that.journal.error(e.stack.toString());
