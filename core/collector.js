@@ -9,7 +9,6 @@ var Rpc = require("../core/rpc").Rpc;
 var Type = require("../core/types").Type;
 var journal = require("../core/journal").journal;
 
-
 var BridgeCall = function (data, context, cbParams, cbBridge) {
 	
 	if (typeof(cbBridge) == undefined) {
@@ -57,13 +56,9 @@ Collector.prototype.configure = function (master, handler, settings) {
 	}
 	
 	this.master = master;
-	this.handler = handler;	
-	this.instance = new Handler(this.name, this.core, this.journal, settings);
-	
-	this.core.that = this;
-	this.journal.that = this;
-	this.rpc_handler.that = this;
-	
+	this.handler = handler;
+	this.instance = new Handler(this.name, this, settings);
+
 	if (this.instance.initialize == null || 
 		this.instance.release == null || 
 		this.instance.process == null || 
@@ -119,8 +114,8 @@ Collector.prototype.stop = function () {
 Collector.prototype.core = {
 
 	"nop": function(cb) {	
-
-		var that = this.that;
+		
+		var that = this;
 
 		try {
 			that.rpc.send(that.master.uuid, "nop", {}, function (data) {
@@ -138,7 +133,7 @@ Collector.prototype.core = {
 
 	"glist": function(cb) {
 
-		var that = this.that;
+		var that = this;
 
 		try {
 			that.rpc.send(that.master.uuid, "glist", {}, function (data) {
@@ -158,7 +153,7 @@ Collector.prototype.core = {
 	
 	"gsub": function(group, cb) {
 
-		var that = this.that;
+		var that = this;
 
 		try {
 			that.rpc.send(that.master.uuid, "gsub", {"group":group}, function (data) {
@@ -176,7 +171,7 @@ Collector.prototype.core = {
 
 	"gusub": function(group, cb) {
 
-		var that = this.that;
+		var that = this;
 
 		try {
 			that.rpc.send(that.master.uuid, "gusub", {"group":group}, function (data) {
@@ -194,7 +189,7 @@ Collector.prototype.core = {
 
 	"clist": function(cb) {
 
-		var that = this.that;
+		var that = this;
 
 		try {
 			that.rpc.send(that.master.uuid, "clist", {}, function (data) {
@@ -214,7 +209,7 @@ Collector.prototype.core = {
 
 	"cread": function(group, channel, cb) {
 
-		var that = this.that;
+		var that = this;
 
 		try {
 			that.rpc.send(that.master.uuid, "cread", {"group":group, "channel":channel}, function (data) {
@@ -234,7 +229,7 @@ Collector.prototype.core = {
 
 	"cwrite": function(group, channel, value, cb) {
 
-		var that = this.that;
+		var that = this;
 
 		try {
 			that.rpc.send(that.master.uuid, "cwrite", {"group":group, "channel":channel, "value":value}, function (data) {
@@ -254,7 +249,7 @@ Collector.prototype.core = {
 
 	"cpub": function(group, channel, value, cb) {
 		
-		var that = this.that;
+		var that = this;
 
 		try {
 			that.rpc.send(that.master.uuid, "cpub", {"group":group, "channel":channel, "value":value}, function (data) {
@@ -272,7 +267,7 @@ Collector.prototype.core = {
 
 	"cupub": function(group, channel, cb) {
 		
-		var that = this.that;
+		var that = this;
 
 		try {
 			that.rpc.send(that.master.uuid, "cupub", {"group":group, "channel":channel}, function (data) {
@@ -290,7 +285,7 @@ Collector.prototype.core = {
 
 	"csub": function(group, channel, cb) {
 		
-		var that = this.that;
+		var that = this;
 
 		try {
 			that.rpc.send(that.master.uuid, "csub", {"group":group, "channel":channel}, function (data) {
@@ -308,7 +303,7 @@ Collector.prototype.core = {
 
 	"cusub": function(group, channel, cb) {
 
-		var that = this.that;
+		var that = this;
 
 		try {
 			that.rpc.send(that.master.uuid, "cusub", {"group":group, "channel":channel}, function (data) {
@@ -331,15 +326,15 @@ Collector.prototype.core = {
 Collector.prototype.journal = {
 
 	"information": function(message) {
-		journal.information(this.that.instance, message);
+		journal.information(this.instance, message);
 	},
 
 	"warning": function(message) {
-		journal.warning(this.that.instance, message);		
+		journal.warning(this.instance, message);		
 	},
 
 	"error": function(message) {
-		journal.error(this.that.instance, message);	
+		journal.error(this.instance, message);	
 	}
 };
 

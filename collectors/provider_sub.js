@@ -1,6 +1,9 @@
 var Class = require("../core/class");
 var Object = require("../core/object");
 
+var CCore = require("../helpers/ccore").CCore;
+var CJournal = require("../helpers/cjournal").CJournal;
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var zmq = require('zmq');
@@ -8,13 +11,15 @@ var util = require("util");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var Handler = Class.Inherit("SUBProvider", Object, function (name, core, journal, settings) {
+var Handler = Class.Inherit("SUBProvider", Object, function (name, context, settings) {
 	
 	Class.Construct(this, name);
 
-	this.core = core;
-	this.journal = journal;
+	this.context = context;
 	this.settings = settings;
+	
+	this.core = new CCore("CCoreHelper", context);
+	this.journal = new CJournal("CJournalHelper", context);
 
 	return this;
 });
