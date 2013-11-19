@@ -2,6 +2,8 @@ var Class = require("../core/class");
 var Object = require("../core/object");
 
 var Automation = require("../helpers/automation").Automation;
+var CCore = require("../helpers/ccore").CCore;
+var CJournal = require("../helpers/cjournal").CJournal;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -9,13 +11,15 @@ var util = require("util");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var Handler = Class.Inherit("Alarm", Object, function (name, core, journal, settings) {
+var Handler = Class.Inherit("Alarm", Object, function (name, context, settings) {
 	
 	Class.Construct(this, name);
 
-	this.core = core;
-	this.journal = journal;
+	this.context = context;
 	this.settings = settings;
+	
+	this.core = new CCore("CCoreHelper", context);
+	this.journal = new CJournal("CJournalHelper", context);
 
 	return this;
 });
@@ -47,7 +51,7 @@ Handler.prototype.reset = function (cb) {
 
 	try {
 		that.value = "";
-		that.core.cupub(that.group, that.channel, function (e) {
+		that.core.cupub(that.group, that.channel, function (err) {
 			if (err) {
 				cb(err);
 			} else {
@@ -214,23 +218,21 @@ Handler.prototype.cwrite = function (data, responce) {
 	try {		
 		if (data.group == that.group && data.channel == that.manual_channel) {
 			if (data.value) {
-				if (data.value == "") {
-					that.reset(data.value, function (err) {
-						if (err) {
-							responce(new Error("During resetting alarm error occurred"))
-						} else {
-							responce(null, that.value);
-						}					
-					});
-				} else {
-					that.set(data.value, function (err) {
-						if (err) {
-							responce(new Error("During setting alarm error occurred"))
-						} else {
-							responce(null, that.value);
-						}					
-					});
-				}
+				that.set(data.value, function (err) {
+					if (err) {
+						responce(new Error("During setting alarm error occurred"))
+					} else {
+						responce(null, that.value);
+					}					
+				});
+			} else {
+				that.reset(function (err) {
+					if (err) {
+						responce(new Error("During resetting alarm error occurred"))
+					} else {
+						responce(null, that.value);
+					}					
+				});
 			}
 		} else {
 			responce(new Error("Unknown alarm control channel"));

@@ -1,18 +1,21 @@
 var Class = require("../core/class");
 var Object = require("../core/object");
 
+var CCore = require("../helpers/ccore").CCore;
+var CJournal = require("../helpers/cjournal").CJournal;
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var util = require("util");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var Alarms = Class.Inherit("Alarms", Object, function (name, core, journal, messages) {
+var Alarms = Class.Inherit("Alarms", Object, function (name, context, messages) {
 	
 	Class.Construct(this, name);
 
-	this.core = core;
-	this.journal = journal;
+	this.core = new CCore("CCoreHelper", context);
+	this.journal = new CJournal("CJournalHelper", context);
 	this.messages = messages;
 
 	return this;

@@ -3,6 +3,8 @@ var Object = require("../core/object");
 
 var Automation = require("../helpers/automation").Automation;
 var Alarms = require("../helpers/alarms").Alarms;
+var CCore = require("../helpers/ccore").CCore;
+var CJournal = require("../helpers/cjournal").CJournal;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -10,13 +12,17 @@ var util = require("util");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var Handler = Class.Inherit("Reclosing", Object, function (name, core, journal, settings) {
+var Handler = Class.Inherit("Reclosing", Object, function (name, context, settings) {
 	
 	Class.Construct(this, name);
 
-	this.core = core;
-	this.journal = journal;
+	this.context = context;
 	this.settings = settings;
+	
+
+	this.core = new CCore("CCoreHelper", context);
+	this.journal = new CJournal("CJournalHelper", context);
+	this.automation = new Automation("AutomationHelper", context);
 
 	return this;
 });
@@ -27,17 +33,16 @@ Handler.prototype.initialize = function (done) {
 
 	var that = this;
 
-	try {
-		this.automation = new Automation("AutomationHelper", this.core, this.journal);
-		this.alarms = new Alarms("AlarmsHelper", this.core, this.journal, this.settings.alarms);
+	try {		
+		this.alarms = new Alarms("AlarmsHelper", this.context, this.settings.alarms);
 		this.group = this.settings.group;
 		this.channel = this.settings.channel;
 		this.check_active = this.settings.active;
+		this.check_idle = this.settings.idle;
 		this.check_control = this.settings.control;
 		this.operate_control = this.settings.operate;
 
 		done();
-		/*;*/
 	} catch (e) {
 		that.journal.error(e.stack.toString());
 		done(e);
@@ -118,111 +123,92 @@ Handler.prototype.process = function () {
 						});					
 					}					
 				} else {
-					that.automation.check(that.check_control, false, function (result) {
+					that.automation.check(that.check_idle, false, function (idleResult) {
 						try {
-							if (result) {
-								var delayTimerId1 = setInterval(function() {
+							if (idleResult) {
+								that.is_idle = true;
+								that.alarms.reset(that.channel + "-100", function (err) {
 									try {
-										clearInterval(delayTimerId1);
-										that.operate(that.operate_control, function(err) {
+										that.core.cpub(that.group, that.channel, "I", function (e) {																										
 											try {
-												if (err) {
-													that.alarms.set(that.channel + "-100", null, function (err) {
+												that.is_active = false;
+											} catch (e) {
+												that.journal.error(e.stack.toString());
+												that.is_active = false;
+											}
+										});									
+									} catch (e) {
+										that.journal.error(e.stack.toString());
+										that.is_active = false;
+									}
+								});								
+							} else {
+								that.automation.check(that.check_control, false, function (result) {
+									try {
+										if (result) {
+											that.journal.information(util.format("Start watching 1nd for reclosing: %s,%s", that.group, that.channel));
+											var delayTimerId1 = setInterval(function() {
+												try {
+													clearInterval(delayTimerId1);
+													that.operate(that.operate_control, function(err) {
 														try {
-															that.is_idle = true;
-															that.alarms.set(that.channel + "-101", null, function (err) {
-																try {
-																	var delayTimerId2 = setInterval(function() {
-																		try {
-																			clearInterval(delayTimerId2);
-																			that.is_active = false;
-																		} catch (e) {
-																			that.journal.error(e.stack.toString());
-																			that.is_active = false;
-																		}
-																	}, 10000);
-																} catch (e) {
-																	that.journal.error(e.stack.toString());
-																	that.is_active = false;
-																}																		
-															});	
-														} catch (e) {
-															that.journal.error(e.stack.toString());
-															that.is_active = false;
-														}																		
-													});	
-												} else {
-													var delayTimerId3 = setInterval(function() {
-														try {
-															clearInterval(delayTimerId3);
-															that.automation.check(that.check_control, false, function (result) {
-																try {
-																	if (result) {
-																		var delayTimerId4 = setInterval(function() {
+															if (err) {
+																that.journal.error(err.toString());
+																that.alarms.set(that.channel + "-100", null, function (err) {
+																	try {
+																		that.is_idle = true;
+																		that.alarms.set(that.channel + "-101", null, function (err) {
 																			try {
-																				clearInterval(delayTimerId4);
-																				that.operate(that.operate_control, function(err) {
+																				var delayTimerId2 = setInterval(function() {
 																					try {
-																						if (err) {
-																							that.alarms.set(that.channel + "-100", null, function (err) {
+																						clearInterval(delayTimerId2);
+																						that.is_active = false;
+																					} catch (e) {
+																						that.journal.error(e.stack.toString());
+																						that.is_active = false;
+																					}
+																				}, 10000);
+																			} catch (e) {
+																				that.journal.error(e.stack.toString());
+																				that.is_active = false;
+																			}																		
+																		});	
+																	} catch (e) {
+																		that.journal.error(e.stack.toString());
+																		that.is_active = false;
+																	}																		
+																});	
+															} else {
+																var delayTimerId3 = setInterval(function() {
+																	try {
+																		clearInterval(delayTimerId3);
+																		that.automation.check(that.check_control, false, function (result) {
+																			try {
+																				if (result) {
+																					that.journal.information(util.format("Start watching 2nd for reclosing: %s,%s", that.group, that.channel));
+																					var delayTimerId4 = setInterval(function() {
+																						try {
+																							clearInterval(delayTimerId4);
+																							that.operate(that.operate_control, function(err) {
 																								try {
-																									that.is_idle = true;
-																									that.core.cpub(that.group, that.channel, "I", function (e) {																										
-																										try {
-																											that.alarms.set(that.channel + "-101", null, function (err) {
-																												try {
-																													var delayTimerId5 = setInterval(function() {
-																														try {
-																															clearInterval(delayTimerId5);
-																															that.is_active = false;
-																														} catch (e) {
-																															that.journal.error(e.stack.toString());
-																															that.is_active = false;
-																														}
-																													}, 10000);
-																												} catch (e) {
-																													that.journal.error(e.stack.toString());
-																													that.is_active = false;
-																												}																		
-																											});
-																										} catch (e) {
-																											that.journal.error(e.stack.toString());
-																											that.is_active = false;
-																										}
-																									});
-																								} catch (e) {
-																									that.journal.error(e.stack.toString());
-																									that.is_active = false;
-																								}																		
-																							});	
-																						} else {
-																							var delayTimerId6 = setInterval(function() {
-																								try {
-																									clearInterval(delayTimerId6);
-																									that.automation.check(that.check_control, false, function (result) {
-																										try {
-																											if (result) {
-																												that.alarms.set(that.channel + "-100", null, function (err) {
+																									if (err) {
+																										that.journal.error(err.toString());
+																										that.alarms.set(that.channel + "-100", null, function (err) {
+																											try {
+																												that.is_idle = true;
+																												that.core.cpub(that.group, that.channel, "I", function (e) {																										
 																													try {
-																														that.is_idle = true;
-																														that.core.cpub(that.group, that.channel, "I", function (e) {																										
+																														that.alarms.set(that.channel + "-101", null, function (err) {
 																															try {
-																																that.alarms.set(that.channel + "-102", null, function (err) {
+																																var delayTimerId5 = setInterval(function() {
 																																	try {
-																																		var delayTimerId7 = setInterval(function() {
-																																			try {
-																																				clearInterval(delayTimerId7);
-																																				that.is_active = false;
-																																			} catch (e) {
-																																				that.journal.error(e.stack.toString());
-																																				that.is_active = false;
-																																			}
-																																		}, 10000);
+																																		clearInterval(delayTimerId5);
+																																		that.is_active = false;
 																																	} catch (e) {
 																																		that.journal.error(e.stack.toString());
 																																		that.is_active = false;
-																																	}																		
-																																});
+																																	}
+																																}, 10000);
 																															} catch (e) {
 																																that.journal.error(e.stack.toString());
 																																that.is_active = false;
@@ -231,59 +217,108 @@ Handler.prototype.process = function () {
 																													} catch (e) {
 																														that.journal.error(e.stack.toString());
 																														that.is_active = false;
-																													}																		
+																													}
 																												});
-																											} else {												
+																											} catch (e) {
+																												that.journal.error(e.stack.toString());
+																												that.is_active = false;
+																											}																		
+																										});	
+																									} else {
+																										var delayTimerId6 = setInterval(function() {
+																											try {
+																												clearInterval(delayTimerId6);
+																												that.automation.check(that.check_control, false, function (result) {
+																													try {
+																														if (result) {
+																															that.alarms.set(that.channel + "-100", null, function (err) {
+																																try {
+																																	that.is_idle = true;
+																																	that.core.cpub(that.group, that.channel, "I", function (e) {																										
+																																		try {
+																																			that.alarms.set(that.channel + "-102", null, function (err) {
+																																				try {
+																																					var delayTimerId7 = setInterval(function() {
+																																						try {
+																																							clearInterval(delayTimerId7);
+																																							that.is_active = false;
+																																						} catch (e) {
+																																							that.journal.error(e.stack.toString());
+																																							that.is_active = false;
+																																						}
+																																					}, 10000);
+																																				} catch (e) {
+																																					that.journal.error(e.stack.toString());
+																																					that.is_active = false;
+																																				}																		
+																																			});
+																																		} catch (e) {
+																																			that.journal.error(e.stack.toString());
+																																			that.is_active = false;
+																																		}																		
+																																	});
+																																} catch (e) {
+																																	that.journal.error(e.stack.toString());
+																																	that.is_active = false;
+																																}																		
+																															});
+																														} else {												
+																															that.is_active = false;
+																														}
+																													} catch (e) {
+																														that.journal.error(e.stack.toString());
+																														that.is_active = false;
+																													}
+																												});
+																											} catch (e) {
+																												that.journal.error(e.stack.toString());
 																												that.is_active = false;
 																											}
-																										} catch (e) {
-																											that.journal.error(e.stack.toString());
-																											that.is_active = false;
-																										}
-																									});
+																										}, 5000);
+																									}
 																								} catch (e) {
 																									that.journal.error(e.stack.toString());
 																									that.is_active = false;
 																								}
-																							}, 5000);
+																							});
+																						} catch (e) {
+																							that.journal.error(e.stack.toString());
+																							that.is_active = false;
 																						}
-																					} catch (e) {
-																						that.journal.error(e.stack.toString());
-																						that.is_active = false;
-																					}
-																				});
+																					}, 50000);
+																				} else {												
+																					that.is_active = false;
+																				}
 																			} catch (e) {
 																				that.journal.error(e.stack.toString());
 																				that.is_active = false;
+
 																			}
-																		}, 60000);
-																	} else {												
+																		});
+																	} catch (e) {
+																		that.journal.error(e.stack.toString());
 																		that.is_active = false;
 																	}
-																} catch (e) {
-																	that.journal.error(e.stack.toString());
-																	that.is_active = false;
-
-																}
-															});
+																}, 5000);
+															}
 														} catch (e) {
 															that.journal.error(e.stack.toString());
 															that.is_active = false;
 														}
-													}, 5000);
+													});
+												} catch (e) {
+													that.journal.error(e.stack.toString());
+													that.is_active = false;
 												}
-											} catch (e) {
-												that.journal.error(e.stack.toString());
-												that.is_active = false;
-											}
-										});
+											}, 30000);
+										} else {												
+											that.is_active = false;
+										}
 									} catch (e) {
 										that.journal.error(e.stack.toString());
 										that.is_active = false;
 									}
-								}, 30000);
-							} else {												
-								that.is_active = false;
+								});
 							}
 						} catch (e) {
 							that.journal.error(e.stack.toString());
@@ -313,15 +348,16 @@ Handler.prototype.operate = function (operate, cb) {
 				if (operate[index]) {					
 					that.automation.check(operate[index].lock, false, function (result) {
 						try {
-							if (!result) {
+							if (result == false) {
 								that.core.cwrite(operate[index].group, operate[index].channel, operate[index].value, function (err, group, channel, value) {
 									try {
 										if (err) {
-											cb(new Error("Operation cannot be completed"));
+											cb(err);
 										} else {
 											var delayTimerId = setInterval(function() {
 												clearInterval(delayTimerId);
-												that.core.cread(operate[index].group, operate[index].channel, operate[index].value, function (err, group, channel, value) {
+												iterator(index + 1, cb);
+												/*that.core.cread(operate[index].group, operate[index].channel, function (err, group, channel, value) {
 													try {
 														if (operate[index].value == value) {
 															iterator(index + 1, cb);
@@ -332,7 +368,7 @@ Handler.prototype.operate = function (operate, cb) {
 														that.journal.error(e.stack.toString());
 														cb(e);
 													}
-												});
+												});*/
 											}, operate[index].delay);
 										}
 									} catch (e) {

@@ -1,6 +1,8 @@
 var Class = require("../core/class");
 var Object = require("../core/object");
 
+var CCore = require("../helpers/ccore").CCore;
+var CJournal = require("../helpers/cjournal").CJournal;
 var Automation = require("../helpers/automation").Automation;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -9,13 +11,16 @@ var util = require("util");
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var Handler = Class.Inherit("Control", Object, function (name, core, journal, settings) {
+var Handler = Class.Inherit("Control", Object, function (name, context, settings) {
 	
 	Class.Construct(this, name);
 
-	this.core = core;
-	this.journal = journal;
+	this.context = context;
 	this.settings = settings;
+	
+	this.core = new CCore("CCoreHelper", context);
+	this.journal = new CJournal("CJournalHelper", context);
+	this.automation = new Automation("AutomationHelper", context);
 
 	return this;
 });
@@ -25,8 +30,6 @@ Handler.prototype.initialize = function (done) {
 	var that = this;
 
 	try {
-
-		this.automation = new Automation("AutomationHelper", this.core, this.journal);
 		this.group = this.settings.group;
 		this.channel = this.settings.channel;
 		this.states = this.settings.states;

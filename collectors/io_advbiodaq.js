@@ -1,6 +1,9 @@
 var Class = require("../core/class");
 var Object = require("../core/object");
 
+var CCore = require("../helpers/ccore").CCore;
+var CJournal = require("../helpers/cjournal").CJournal;
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var util = require("util");
@@ -8,13 +11,15 @@ var biodaq = require("biodaq"), BioDaq = biodaq.BioDaq;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var BioDaqHandler = Class.Inherit("BioDaqHandler", Object, function (name, core, journal, settings) {
+var BioDaqHandler = Class.Inherit("BioDaqHandler", Object, function (name, context, settings) {
 	
 	Class.Construct(this, name);
 
-	this.core = core;
-	this.journal = journal;
-	this.settings = settings;	
+	this.context = context;
+	this.settings = settings;
+	
+	this.core = new CCore("CCoreHelper", context);
+	this.journal = new CJournal("CJournalHelper", context);	
 
 	return this;
 });

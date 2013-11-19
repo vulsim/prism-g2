@@ -244,6 +244,21 @@
 		},		
 
 		{
+			"group" : "automation-operate_0",
+			"handler" : "auto_operate",
+			"configure" : {
+				"delay" : 10000,
+				"operate" : [
+					{ 
+						"group" : "io", "channel" : "do-power", "value" : "1", 
+						"lock" : {}, 
+						"delay" : 1000 
+					}
+				]
+			}
+		},
+
+		{
 			"group" : "automation-ctrl_0",
 			"handler" : "auto_control",
 			"configure" : {
@@ -678,6 +693,8 @@
 							]							
 						},
 						"operate" : [
+							{ "group" : "io", "channel" : "do-ul1-167", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ul1-167", "value" : "0", "lock" : {}, "delay" : 1000 },
 							{ "group" : "io", "channel" : "do-ul1-166", "value" : "1", "lock" : {}, "delay" : 500 },
 							{ "group" : "io", "channel" : "do-ul1-166", "value" : "0", "lock" : {}, "delay" : 1000 }
 						]
@@ -810,6 +827,8 @@
 							]							
 						},
 						"operate" : [
+							{ "group" : "io", "channel" : "do-ul2-167", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ul2-167", "value" : "0", "lock" : {}, "delay" : 1000 },
 							{ "group" : "io", "channel" : "do-ul2-166", "value" : "1", "lock" : {}, "delay" : 500 },
 							{ "group" : "io", "channel" : "do-ul2-166", "value" : "0", "lock" : {}, "delay" : 1000 }
 						]
@@ -942,6 +961,8 @@
 							]							
 						},
 						"operate" : [
+							{ "group" : "io", "channel" : "do-ul3-167", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ul3-167", "value" : "0", "lock" : {}, "delay" : 1000 },
 							{ "group" : "io", "channel" : "do-ul3-166", "value" : "1", "lock" : {}, "delay" : 500 },
 							{ "group" : "io", "channel" : "do-ul3-166", "value" : "0", "lock" : {}, "delay" : 1000 }
 						]
@@ -1074,6 +1095,8 @@
 							]							
 						},
 						"operate" : [
+							{ "group" : "io", "channel" : "do-ul4-167", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-ul4-167", "value" : "0", "lock" : {}, "delay" : 1000 },
 							{ "group" : "io", "channel" : "do-ul4-166", "value" : "1", "lock" : {}, "delay" : 500 },
 							{ "group" : "io", "channel" : "do-ul4-166", "value" : "0", "lock" : {}, "delay" : 1000 }
 						]
@@ -1335,6 +1358,8 @@
 							]							
 						},
 						"operate" : [
+							{ "group" : "io", "channel" : "do-zap-167", "value" : "1", "lock" : {}, "delay" : 500 },
+							{ "group" : "io", "channel" : "do-zap-167", "value" : "0", "lock" : {}, "delay" : 1000 },
 							{ "group" : "io", "channel" : "do-zap-166", "value" : "1", "lock" : {}, "delay" : 500 },
 							{ "group" : "io", "channel" : "do-zap-166", "value" : "0", "lock" : {}, "delay" : 1000 }
 						]
@@ -1380,17 +1405,18 @@
 						{"group" : "io", "channel" : "di-ul1-708", "value" : "0"}
 					]
 				},
+				"idle" : {"group" : "io", "channel" : "di-ul1-708", "value" : "1"},
 				"control" : { "group" : "auto", "channel" : "lsw1-qf-ctrl", "value" : "B" },
 				"operate" : [
 					{ 
-						"group" : "io", "channel" : "lsw1-qf-ctrl", "value" : "A", 
+						"group" : "auto", "channel" : "lsw1-qf-ctrl", "value" : "A", 
 						"lock" : {
 							"or" : [
 								{"group" : "io", "channel" : "di-ul1-708", "value" : "1"},
 								{"group" : "io", "channel" : "di-ul1-n01", "value" : "1"}
-							]
+							]							
 						}, 
-						"delay" : 1000 
+						"delay" : 500 
 					}
 				],
 				"alarms" : {
@@ -1402,7 +1428,7 @@
 		},
 
 		{
-			"group" : "automation-reclosing_0",
+			"group" : "automation-reclosing_1",
 			"handler" : "auto_reclosing",
 			"configure" : {
 				"group" : "auto",
@@ -1414,17 +1440,18 @@
 						{"group" : "io", "channel" : "di-ul2-708", "value" : "0"}
 					]
 				},
+				"idle" : {"group" : "io", "channel" : "di-ul2-708", "value" : "1"},
 				"control" : { "group" : "auto", "channel" : "lsw2-qf-ctrl", "value" : "B" },
 				"operate" : [
 					{ 
-						"group" : "io", "channel" : "lsw2-qf-ctrl", "value" : "A", 
+						"group" : "auto", "channel" : "lsw2-qf-ctrl", "value" : "A", 
 						"lock" : {
 							"or" : [
 								{"group" : "io", "channel" : "di-ul2-708", "value" : "1"},
 								{"group" : "io", "channel" : "di-ul2-n01", "value" : "1"}
-							]
+							]							
 						}, 
-						"delay" : 1000 
+						"delay" : 500 
 					}
 				],
 				"alarms" : {
@@ -1436,7 +1463,7 @@
 		},
 
 		{
-			"group" : "automation-reclosing_0",
+			"group" : "automation-reclosing_2",
 			"handler" : "auto_reclosing",
 			"configure" : {
 				"group" : "auto",
@@ -1448,17 +1475,18 @@
 						{"group" : "io", "channel" : "di-ul3-708", "value" : "0"}
 					]
 				},
+				"idle" : {"group" : "io", "channel" : "di-ul3-708", "value" : "1"},
 				"control" : { "group" : "auto", "channel" : "lsw3-qf-ctrl", "value" : "B" },
 				"operate" : [
 					{ 
-						"group" : "io", "channel" : "lsw3-qf-ctrl", "value" : "A", 
+						"group" : "auto", "channel" : "lsw3-qf-ctrl", "value" : "A", 
 						"lock" : {
 							"or" : [
 								{"group" : "io", "channel" : "di-ul3-708", "value" : "1"},
 								{"group" : "io", "channel" : "di-ul3-n01", "value" : "1"}
-							]
+							]							
 						}, 
-						"delay" : 1000 
+						"delay" : 500 
 					}
 				],
 				"alarms" : {
@@ -1470,7 +1498,7 @@
 		},
 
 		{
-			"group" : "automation-reclosing_0",
+			"group" : "automation-reclosing_3",
 			"handler" : "auto_reclosing",
 			"configure" : {
 				"group" : "auto",
@@ -1482,17 +1510,18 @@
 						{"group" : "io", "channel" : "di-ul4-708", "value" : "0"}
 					]
 				},
+				"idle" : {"group" : "io", "channel" : "di-ul4-708", "value" : "1"},
 				"control" : { "group" : "auto", "channel" : "lsw4-qf-ctrl", "value" : "B" },
 				"operate" : [
 					{ 
-						"group" : "io", "channel" : "lsw4-qf-ctrl", "value" : "A", 
+						"group" : "auto", "channel" : "lsw4-qf-ctrl", "value" : "A", 
 						"lock" : {
 							"or" : [
 								{"group" : "io", "channel" : "di-ul4-708", "value" : "1"},
 								{"group" : "io", "channel" : "di-ul4-n01", "value" : "1"}
-							]
+							]							
 						}, 
-						"delay" : 1000 
+						"delay" : 500						
 					}
 				],
 				"alarms" : {
@@ -1500,6 +1529,161 @@
 					"lsw4-arm-101" : "[A] ЛА №4, повторное включение не произведено",
 					"lsw4-arm-102" : "[A] ЛА №4, короткое замыкание на линии"
 				}
+			}
+		},
+
+		{
+			"group" : "automation-reclosing_4",
+			"handler" : "auto_reclosing",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "lsw9-arm",				
+				"interval" : 1000,
+				"active" : {
+					"and" : [
+						{"group" : "auto", "channel" : "lsw9-qf-ctrl", "value" : "A"},
+						{"group" : "io", "channel" : "di-zap-708", "value" : "0"}
+					]
+				},
+				"idle" : {"group" : "io", "channel" : "di-zap-708", "value" : "1"},
+				"control" : { "group" : "auto", "channel" : "lsw9-qf-ctrl", "value" : "B" },
+				"operate" : [
+					{ 
+						"group" : "auto", "channel" : "lsw9-qf-ctrl", "value" : "A", 
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-zap-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-zap-n01", "value" : "1"}
+							]							
+						}, 
+						"delay" : 500						
+					}
+				],
+				"alarms" : {
+					"lsw9-arm-100" : "[A] АЗ, АПВ отключен",
+					"lsw9-arm-101" : "[A] АЗ, повторное включение не произведено",
+					"lsw9-arm-102" : "[A] АЗ, короткое замыкание на линии"
+				}
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw1-arm-100"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw1-arm-101"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw1-arm-102"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw2-arm-100"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw2-arm-101"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw2-arm-102"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw3-arm-100"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw3-arm-101"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw3-arm-102"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw4-arm-100"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw4-arm-101"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw4-arm-102"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw9-arm-100"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw9-arm-101"
+			}
+		},
+
+		{
+			"group" : "automation-alarm_0",
+			"handler" : "auto_alarm",
+			"configure" : {
+				"group" : "alarm", "channel" : "lsw9-arm-102"
 			}
 		}
 	]
