@@ -109,21 +109,50 @@ Handler.prototype.operate = function (operate, cb) {
 					that.automation.check(operate[index].lock, false, function (result) {
 						try {
 							if (!result) {
-								that.core.cwrite(operate[index].group, operate[index].channel, operate[index].value, function (err, group, channel, value) {
-									try {
-										if (err) {
-											cb(new Error("Operation can not be completed"));
-										} else {
-											var delayTimerId = setInterval(function() {
-												clearInterval(delayTimerId);
+								if (operate[index].condition) {
+									that.automation.check(operate[index].condition, false, function (needOperate) {
+										try {
+											if (needOperate) {
+												that.core.cwrite(operate[index].group, operate[index].channel, operate[index].value, function (err, group, channel, value) {
+													try {
+														if (err) {
+															cb(new Error("Operation can not be completed"));
+														} else {
+															var delayTimerId = setInterval(function() {
+																clearInterval(delayTimerId);
+																iterator(index + 1, cb);
+															}, operate[index].delay);
+														}
+													} catch (e) {
+														that.journal.error(e.stack.toString());
+														cb(e);
+													}
+												});
+											} else {
 												iterator(index + 1, cb);
-											}, operate[index].delay);
+											}
+										} catch (e) {
+											that.journal.error(e.stack.toString());
+											cb(e);
+										}										
+									});
+								} else {
+									that.core.cwrite(operate[index].group, operate[index].channel, operate[index].value, function (err, group, channel, value) {
+										try {
+											if (err) {
+												cb(new Error("Operation can not be completed"));
+											} else {
+												var delayTimerId = setInterval(function() {
+													clearInterval(delayTimerId);
+													iterator(index + 1, cb);
+												}, operate[index].delay);
+											}
+										} catch (e) {
+											that.journal.error(e.stack.toString());
+											cb(e);
 										}
-									} catch (e) {
-										that.journal.error(e.stack.toString());
-										cb(e);
-									}
-								});
+									});
+								}								
 							} else {
 								cb(new Error("Operation can not be completed"));
 							}
