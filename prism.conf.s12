@@ -237,7 +237,7 @@
 			"configure" : {
 				"listen" : "0.0.0.0:1234",
 				"subscribe" : {
-					"groups" : ["io"],
+					"groups" : ["io", "alarm"],
 					"channels" : []
 				}				
 			}
@@ -712,7 +712,8 @@
 						},
 						"operate" : [
 							{ "group" : "io", "channel" : "do-ul1-167", "value" : "1", "lock" : {}, "delay" : 500 },
-							{ "group" : "io", "channel" : "do-ul1-167", "value" : "0", "lock" : {}, "delay" : 1000 }
+							{ "group" : "io", "channel" : "do-ul1-167", "value" : "0", "lock" : {}, "delay" : 1000 },
+							{ "group" : "auto", "channel" : "lsw1-arm", "value" : "5", "lock" : {}, "delay" : 500 }
 						]
 					}
 				]
@@ -846,7 +847,8 @@
 						},
 						"operate" : [
 							{ "group" : "io", "channel" : "do-ul2-167", "value" : "1", "lock" : {}, "delay" : 500 },
-							{ "group" : "io", "channel" : "do-ul2-167", "value" : "0", "lock" : {}, "delay" : 1000 }
+							{ "group" : "io", "channel" : "do-ul2-167", "value" : "0", "lock" : {}, "delay" : 1000 },
+							{ "group" : "auto", "channel" : "lsw2-arm", "value" : "5", "lock" : {}, "delay" : 500 }
 						]
 					}
 				]
@@ -980,7 +982,8 @@
 						},
 						"operate" : [
 							{ "group" : "io", "channel" : "do-ul3-167", "value" : "1", "lock" : {}, "delay" : 500 },
-							{ "group" : "io", "channel" : "do-ul3-167", "value" : "0", "lock" : {}, "delay" : 1000 }
+							{ "group" : "io", "channel" : "do-ul3-167", "value" : "0", "lock" : {}, "delay" : 1000 },
+							{ "group" : "auto", "channel" : "lsw3-arm", "value" : "5", "lock" : {}, "delay" : 500 }
 						]
 					}
 				]
@@ -1114,7 +1117,8 @@
 						},
 						"operate" : [
 							{ "group" : "io", "channel" : "do-ul4-167", "value" : "1", "lock" : {}, "delay" : 500 },
-							{ "group" : "io", "channel" : "do-ul4-167", "value" : "0", "lock" : {}, "delay" : 1000 }
+							{ "group" : "io", "channel" : "do-ul4-167", "value" : "0", "lock" : {}, "delay" : 1000 },
+							{ "group" : "auto", "channel" : "lsw4-arm", "value" : "5", "lock" : {}, "delay" : 500 }
 						]
 					}
 				]
@@ -1246,7 +1250,8 @@
 						},
 						"operate" : [
 							{ "group" : "io", "channel" : "do-ul5-167", "value" : "1", "lock" : {}, "delay" : 500 },
-							{ "group" : "io", "channel" : "do-ul5-167", "value" : "0", "lock" : {}, "delay" : 1000 }
+							{ "group" : "io", "channel" : "do-ul5-167", "value" : "0", "lock" : {}, "delay" : 1000 },
+							{ "group" : "auto", "channel" : "lsw5-arm", "value" : "5", "lock" : {}, "delay" : 500 }
 						]
 					}
 				]
@@ -1376,7 +1381,8 @@
 						},
 						"operate" : [
 							{ "group" : "io", "channel" : "do-zap-167", "value" : "1", "lock" : {}, "delay" : 500 },
-							{ "group" : "io", "channel" : "do-zap-167", "value" : "0", "lock" : {}, "delay" : 1000 }
+							{ "group" : "io", "channel" : "do-zap-167", "value" : "0", "lock" : {}, "delay" : 1000 },
+							{ "group" : "auto", "channel" : "lsw9-arm", "value" : "5", "lock" : {}, "delay" : 500 }
 						]
 					}
 				]

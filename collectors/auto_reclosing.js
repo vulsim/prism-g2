@@ -57,6 +57,7 @@ Handler.prototype.process = function () {
 
 	var that = this;
 
+	that.lock = 0;
 	that.is_idle = true;
 	that.is_first = true;
 	that.is_active = false;	
@@ -71,9 +72,22 @@ Handler.prototype.process = function () {
 			
 				that.is_active = true;
 
-				if (that.is_idle || that.is_first) {
+				if (that.is_idle || that.is_first || that.lock > 0) {
 					if (that.is_first) {
 						that.is_first = false;
+						that.alarms.set(that.channel + "-100", null, function (err) {
+							try {
+								that.core.cpub(that.group, that.channel, "I", function (e) {
+									that.is_active = false;
+								});
+							} catch (e) {
+								that.journal.error(e.stack.toString());
+								that.is_active = false;
+							}
+						});
+					} else if (that.lock > 0) {
+						that.is_idle = true;
+						that.lock = that.lock - 1;
 						that.alarms.set(that.channel + "-100", null, function (err) {
 							try {
 								that.core.cpub(that.group, that.channel, "I", function (e) {
@@ -417,7 +431,12 @@ Handler.prototype.cwrite = function (data, responce) {
 	var that = this;
 
 	try {
-		responce(new Error("Operation is not allowed"))
+		if (data.group == that.group && data.channel == that.channel) {
+			that.lock = parseInt(data.value);
+			responce(null, "LOCK");
+		} else {
+			responce(new Error("Operation is not allowed"))
+		}
 	} catch (e) {
 		that.journal.error(e.stack.toString());
 	}
