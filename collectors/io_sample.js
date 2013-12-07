@@ -38,10 +38,13 @@ Handler.prototype.initialize = function (done) {
 
 	try {		
 		that.channels = (that.settings.publish) ? that.settings.publish : [];
+		//console.log(that.core.that.name);
 
 		var pubIterator = function (index, cb) {
 			try {
 				if (that.channels[index]) {
+					//console.log(that.core.uuid);				
+					//console.log(that.core.that.name);
 					that.core.cpub(that.channels[index].group, that.channels[index].channel, that.channels[index].value, function (e) {
 						try {
 							if (e) {

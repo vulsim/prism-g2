@@ -164,103 +164,112 @@ Handler.prototype.process = function () {
 											var delayTimerId1 = setInterval(function() {
 												try {
 													clearInterval(delayTimerId1);
-													that.operate(that.operate_control, function(err) {
-														try {
-															if (err) {
-																that.journal.error(err.toString());
-																that.alarms.set(that.channel + "-100", null, function (err) {
-																	try {
-																		that.is_idle = true;
-																		that.alarms.set(that.channel + "-101", null, function (err) {
-																			try {
-																				var delayTimerId2 = setInterval(function() {
-																					try {
-																						clearInterval(delayTimerId2);
-																						that.is_active = false;
-																					} catch (e) {
-																						that.journal.error(e.stack.toString());
-																						that.is_active = false;
-																					}
-																				}, 10000);
-																			} catch (e) {
-																				that.journal.error(e.stack.toString());
-																				that.is_active = false;
-																			}																		
-																		});	
-																	} catch (e) {
-																		that.journal.error(e.stack.toString());
-																		that.is_active = false;
-																	}																		
-																});	
-															} else {
-																var delayTimerId3 = setInterval(function() {
-																	try {
-																		clearInterval(delayTimerId3);
-																		that.automation.check(that.check_control, false, function (result) {
-																			try {
-																				if (result) {
-																					that.journal.information(util.format("Start watching 2nd for reclosing: %s,%s", that.group, that.channel));
-																					var delayTimerId4 = setInterval(function() {
+
+													if (that.lock == 0) {
+														that.operate(that.operate_control, function(err) {
+															try {
+																if (err) {
+																	that.journal.error(err.toString());
+																	that.alarms.set(that.channel + "-100", null, function (err) {
+																		try {
+																			that.is_idle = true;
+																			that.alarms.set(that.channel + "-101", null, function (err) {
+																				try {
+																					var delayTimerId2 = setInterval(function() {
 																						try {
-																							clearInterval(delayTimerId4);
-																							that.operate(that.operate_control, function(err) {
-																								try {
-																									if (err) {
-																										that.journal.error(err.toString());
-																										that.alarms.set(that.channel + "-100", null, function (err) {
-																											try {
-																												that.is_idle = true;
-																												that.core.cpub(that.group, that.channel, "I", function (e) {																										
+																							clearInterval(delayTimerId2);
+																							that.is_active = false;
+																						} catch (e) {
+																							that.journal.error(e.stack.toString());
+																							that.is_active = false;
+																						}
+																					}, 10000);
+																				} catch (e) {
+																					that.journal.error(e.stack.toString());
+																					that.is_active = false;
+																				}																		
+																			});	
+																		} catch (e) {
+																			that.journal.error(e.stack.toString());
+																			that.is_active = false;
+																		}																		
+																	});	
+																} else {
+																	var delayTimerId3 = setInterval(function() {
+																		try {
+																			clearInterval(delayTimerId3);
+																			that.automation.check(that.check_control, false, function (result) {
+																				try {
+																					if (result) {
+																						that.journal.information(util.format("Start watching 2nd for reclosing: %s,%s", that.group, that.channel));
+																						var delayTimerId4 = setInterval(function() {
+																							try {
+																								clearInterval(delayTimerId4);
+
+																								if (that.lock == 0) {
+																									that.operate(that.operate_control, function(err) {
+																										try {
+																											if (err) {
+																												that.journal.error(err.toString());
+																												that.alarms.set(that.channel + "-100", null, function (err) {
 																													try {
-																														that.alarms.set(that.channel + "-101", null, function (err) {
+																														that.is_idle = true;
+																														that.core.cpub(that.group, that.channel, "I", function (e) {																										
 																															try {
-																																var delayTimerId5 = setInterval(function() {
+																																that.alarms.set(that.channel + "-101", null, function (err) {
 																																	try {
-																																		clearInterval(delayTimerId5);
-																																		that.is_active = false;
+																																		var delayTimerId5 = setInterval(function() {
+																																			try {
+																																				clearInterval(delayTimerId5);
+																																				that.is_active = false;
+																																			} catch (e) {
+																																				that.journal.error(e.stack.toString());
+																																				that.is_active = false;
+																																			}
+																																		}, 10000);
 																																	} catch (e) {
 																																		that.journal.error(e.stack.toString());
 																																		that.is_active = false;
-																																	}
-																																}, 10000);
+																																	}																		
+																																});
 																															} catch (e) {
 																																that.journal.error(e.stack.toString());
 																																that.is_active = false;
-																															}																		
+																															}
 																														});
 																													} catch (e) {
 																														that.journal.error(e.stack.toString());
 																														that.is_active = false;
-																													}
-																												});
-																											} catch (e) {
-																												that.journal.error(e.stack.toString());
-																												that.is_active = false;
-																											}																		
-																										});	
-																									} else {
-																										var delayTimerId6 = setInterval(function() {
-																											try {
-																												clearInterval(delayTimerId6);
-																												that.automation.check(that.check_control, false, function (result) {
+																													}																		
+																												});	
+																											} else {
+																												var delayTimerId6 = setInterval(function() {
 																													try {
-																														if (result) {
-																															that.alarms.set(that.channel + "-100", null, function (err) {
-																																try {
-																																	that.is_idle = true;
-																																	that.core.cpub(that.group, that.channel, "I", function (e) {																										
+																														clearInterval(delayTimerId6);
+																														that.automation.check(that.check_control, false, function (result) {
+																															try {
+																																if (result) {
+																																	that.alarms.set(that.channel + "-100", null, function (err) {
 																																		try {
-																																			that.alarms.set(that.channel + "-102", null, function (err) {
+																																			that.is_idle = true;
+																																			that.core.cpub(that.group, that.channel, "I", function (e) {																										
 																																				try {
-																																					var delayTimerId7 = setInterval(function() {
+																																					that.alarms.set(that.channel + "-102", null, function (err) {
 																																						try {
-																																							clearInterval(delayTimerId7);
-																																							that.is_active = false;
+																																							var delayTimerId7 = setInterval(function() {
+																																								try {
+																																									clearInterval(delayTimerId7);
+																																									that.is_active = false;
+																																								} catch (e) {
+																																									that.journal.error(e.stack.toString());
+																																									that.is_active = false;
+																																								}
+																																							}, 10000);
 																																						} catch (e) {
 																																							that.journal.error(e.stack.toString());
 																																							that.is_active = false;
-																																						}
-																																					}, 10000);
+																																						}																		
+																																					});
 																																				} catch (e) {
 																																					that.journal.error(e.stack.toString());
 																																					that.is_active = false;
@@ -271,55 +280,58 @@ Handler.prototype.process = function () {
 																																			that.is_active = false;
 																																		}																		
 																																	});
-																																} catch (e) {
-																																	that.journal.error(e.stack.toString());
+																																} else {												
 																																	that.is_active = false;
-																																}																		
-																															});
-																														} else {												
-																															that.is_active = false;
-																														}
+																																}
+																															} catch (e) {
+																																that.journal.error(e.stack.toString());
+																																that.is_active = false;
+																															}
+																														});
 																													} catch (e) {
 																														that.journal.error(e.stack.toString());
 																														that.is_active = false;
 																													}
-																												});
-																											} catch (e) {
-																												that.journal.error(e.stack.toString());
-																												that.is_active = false;
+																												}, 5000);
 																											}
-																										}, 5000);
-																									}
-																								} catch (e) {
-																									that.journal.error(e.stack.toString());
+																										} catch (e) {
+																											that.journal.error(e.stack.toString());
+																											that.is_active = false;
+																										}
+																									});
+																								} else {
+																									that.journal.warning("Reclosing cannot operate, because it locked");
 																									that.is_active = false;
-																								}
-																							});
-																						} catch (e) {
-																							that.journal.error(e.stack.toString());
-																							that.is_active = false;
-																						}
-																					}, 50000);
-																				} else {												
+																								}																								
+																							} catch (e) {
+																								that.journal.error(e.stack.toString());
+																								that.is_active = false;
+																							}
+																						}, 50000);
+																					} else {												
+																						that.is_active = false;
+																					}
+																				} catch (e) {
+																					that.journal.error(e.stack.toString());
 																					that.is_active = false;
-																				}
-																			} catch (e) {
-																				that.journal.error(e.stack.toString());
-																				that.is_active = false;
 
-																			}
-																		});
-																	} catch (e) {
-																		that.journal.error(e.stack.toString());
-																		that.is_active = false;
-																	}
-																}, 5000);
+																				}
+																			});
+																		} catch (e) {
+																			that.journal.error(e.stack.toString());
+																			that.is_active = false;
+																		}
+																	}, 5000);
+																}
+															} catch (e) {
+																that.journal.error(e.stack.toString());
+																that.is_active = false;
 															}
-														} catch (e) {
-															that.journal.error(e.stack.toString());
-															that.is_active = false;
-														}
-													});
+														});
+													} else {
+														that.journal.warning("Reclosing cannot operate, because it locked");
+														that.is_active = false;
+													}													
 												} catch (e) {
 													that.journal.error(e.stack.toString());
 													that.is_active = false;
