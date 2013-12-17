@@ -3,14 +3,16 @@ var Object = require("../core/object");
 
 var CCore = require("../helpers/ccore").CCore;
 var CJournal = require("../helpers/cjournal").CJournal;
+var CC301 = require("../helpers/cc301").CC301;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var util = require("util");
+var SerialPort = require("serialport").SerialPort;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var Handler = Class.Inherit("SampleHandler", Object, function (name, context, settings) {
+var Handler = Class.Inherit("CC301", Object, function (name, context, settings) {
 		
 	Class.Construct(this, name);
 
@@ -19,58 +21,30 @@ var Handler = Class.Inherit("SampleHandler", Object, function (name, context, se
 	
 	this.core = new CCore("CCoreHelper", context);
 	this.journal = new CJournal("CJournalHelper", context);
+	this.automation = new Automation("AutomationHelper", context);
+	this.cc301 = new CC301("CC301", context);
 
 	return this;
 });
-
-var SimpleCall = function (context, params, cbBridge) {
-	
-	if (typeof(cbBridge) == undefined) {
-		return;
-	}
-	
-	Function.call.apply(cbBridge, [].concat(context, params));
-};
 
 Handler.prototype.initialize = function (done) {
 
 	var that = this;
 
 	try {		
-		that.channels = (that.settings.publish) ? that.settings.publish : [];
-		//console.log(that.core.that.name);
+		that.devices = that.settings.devices;
 
-		var pubIterator = function (index, cb) {
-			try {
-				if (that.channels[index]) {
-					//console.log(that.core.uuid);				
-					//console.log(that.core.that.name);
-					that.core.cpub(that.channels[index].group, that.channels[index].channel, that.channels[index].value, function (e) {
-						try {
-							if (e) {
-								cb(e);
-							} else {
-								pubIterator(index + 1, cb);
-							}
-						} catch (e) {
-							cb(e);
-						}			
-					});
+		var serialPort = new SerialPort(that.settings.serial_port, that.settings.serial_options);
 
-				} else {
-					cb();
-				}
-			} catch (e) {
-				cb(e);
-			}
-		};
-
-		pubIterator(0, function (err) {
+		serialPort.on('open', function(err) {
 			if (err) {
-				that.journal.error(e);
+				done(new Error("Cannot open serial port"));
+			} else {
+				serialPort.close(function (err) {
+					done(null);
+				});
 			}
-			done(err);
-		})
+		});
 	} catch (e) {
 		that.journal.error(e.stack.toString());
 		done(e);
@@ -81,15 +55,141 @@ Handler.prototype.release = function () {
 
 };
 
+Handler.prototype.republish = function (device, info, cb) {
+
+	try {
+		var pubIterator = function (index, cb) {
+			try {
+				if (device.channels[index]) {
+					var value = info[device.channels[index].param].toString();
+					
+					if (device.channels[index].value == null || device.channels[index].value != value) {
+						device.channels[index].value = value;
+						that.core.cpub(device.channels[index].group, device.channels[index].channel, device.channels[index].value, function (err) {
+							try {
+								pubIterator(index + 1, cb);
+							} catch (e) {
+								cb(e);
+							}			
+						});
+					} else {
+						pubIterator(index + 1, cb);
+					}
+				} else {
+					cb();
+				}
+			} catch (e) {
+				cb(e);
+			}
+		};		
+	} catch (e) {
+		that.journal.error(e.stack.toString());
+		cb(e);
+	}
+};
+
 Handler.prototype.process = function () {
 
 	var that = this;
 
 	try {
-			
+		if (that.settings.interval) {
+			var queueActive = false;
+			var queueTimerId = setInterval(function() {
+				try {
+					if (queueActive) {
+						return;
+					}
+
+					queueActive = true;
+
+					var rawReadHandler = function(timeout, rawReadCb) {
+						try {
+							var rawReadTimerId = setInterval(function() {
+								try {
+									clearInterval(rawReadTimerId);
+
+									if (currentRawReadBuffer) {
+										rawReadCb(null, currentRawReadBuffer);
+										currentRawReadBuffer = null;
+									} else {
+										rawReadCb(new Error("No data received"), null);
+									}			
+								} catch (e) {
+									rawReadCb(e);
+								}
+							}, timeout);
+						} catch (e) {
+							rawReadCb(e);
+						}						
+					};
+
+					var rawWriteHandler = function (data, rawWriteCb) {
+						try {
+							serialPort.write(data, function(err, length) {
+								rawWriteCb(err);
+							});
+						} catch (e) {
+							rawWriteCb(e);
+						}						
+					};
+
+					var currentRawReadBuffer = null;
+					var serialPort = new SerialPort(that.settings.serial_port, that.settings.serial_options);
+
+					serialPort.on('data', function(data) {
+						if (currentRawReadBuffer) {
+							currentRawReadBuffer = Buffer.concat([currentRawReadBuffer, data]);
+						} else {
+							currentRawReadBuffer = data;
+						}
+					});
+
+					serialPort.on('open', function(err) {
+						try {
+							if (err == null) {
+								var queueIterator = function (index, cb) {
+									try {
+										if (that.devices[index]) {
+											cc301.getInstantValues(rawReadHandler, rawWriteHandler, that.devices[index].address, function (err, info) {
+												try {
+													if (info) {
+														that.republish(that.devices[index], info, function () {
+															queueIterator(index + 1, cb);
+														});
+													} else {
+														queueIterator(index + 1, cb);
+													}
+												} catch (e) {
+													queueIterator(index + 1, cb);
+												}
+											});
+										} else {
+											cb(null)
+										}
+									} catch (e) {
+										cb(e);
+									}
+								};
+								queueIterator(0, function () {
+									queueActive = false;
+								});
+							}
+						} catch (e) {
+							that.journal.error(e.stack.toString());
+							queueActive = false;
+						}						
+					});					
+				} catch (e) {
+					that.journal.error(e.stack.toString());
+					queueActive = false;
+				}
+			}, that.settings.delay);
+		}			
 	} catch (e) {
 		that.journal.error(e.stack.toString());
 	}	
+		}
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,16 +198,16 @@ Handler.prototype.cread = function (data, responce) {
 
 	var that = this;
 
-	//console.log(data);
-
 	try {
 		var channel = null;
 
-		for (var index in that.channels) {
-			if (that.channels[index].group == data.group && that.channels[index].channel == data.channel) {
-				responce(null, that.channels[index].value);
-				return;
-			}
+		for (var deviceIndex in that.devices) {
+			for (var channelIndex in that.devices[deviceIndex]) {
+				if (that.devices[deviceIndex].channels[channelIndex].group == data.group && that.devices[deviceIndex].channels[channelIndex].channel == data.channel) {
+					responce(null, that.devices[deviceIndex].channels[channelIndex].value);
+					return;
+				}
+			}			
 		}
 		responce(new Error("Unknown channel"));
 	} catch (e) {
@@ -117,17 +217,8 @@ Handler.prototype.cread = function (data, responce) {
 
 Handler.prototype.cwrite = function (data, responce) {
 	
-	try {
-		var channel = null;
-
-		for (var index in that.channels) {
-			if (that.channels[index].group == that.group && that.channels[index].channel == data.channel) {
-				that.channels[index].value = data.value;
-				responce(null, that.channels[index].value);
-				return;
-			}
-		}
-		responce(new Error("Unknown channel"));
+	try {		
+		responce(new Error("Not supported"));
 	} catch (e) {
 		that.journal.error(e.stack.toString());
 	}
