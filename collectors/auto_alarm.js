@@ -20,6 +20,7 @@ var Handler = Class.Inherit("Alarm", Object, function (name, context, settings) 
 	
 	this.core = new CCore("CCoreHelper", context);
 	this.journal = new CJournal("CJournalHelper", context);
+	this.automation = new Automation("AutomationHelper", context);
 
 	return this;
 });
@@ -71,8 +72,7 @@ Handler.prototype.initialize = function (done) {
 
 	var that = this;
 
-	try {
-		that.automation = new Automation("AutomationHelper", that.core, that.journal);
+	try {		
 		that.group = that.settings.group;
 		that.channel = that.settings.channel;
 		that.manual_channel = that.channel + "-manual";
@@ -92,11 +92,11 @@ Handler.prototype.initialize = function (done) {
 		that.value = "";
 
 		if (that.settings.states) {
-			for (var index in that.settings.states) {
-				if (that.settings.states[index].state = "R") {
+			for (var index in that.settings.states) {				
+				if (that.settings.states[index].state == "R") {
 					that.states[0].conform = that.settings.states[index].conform;
 					that.states[0].count = that.settings.states[index].count;
-				} else if (that.settings.states[index].state = "S") {
+				} else if (that.settings.states[index].state == "S") {
 					that.states[1].conform = that.settings.states[index].conform;
 					that.states[1].count = that.settings.states[index].count;
 				}
@@ -165,7 +165,7 @@ Handler.prototype.process = function () {
 											that.operate = false;
 										});
 									} else {
-										that.reset(null, function (err) {
+										that.reset(function (err) {
 											if (err) {
 												that.journal.error(util.format("[%s,%s] Error occurred when reset alarm: ", that.group, that.channel, err.toString()));
 											}									

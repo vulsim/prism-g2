@@ -1419,9 +1419,17 @@
 							},
 							{								
 								"group" : "auto", 
-								"channel" : "lsw2-spare-ctrl", 
+								"channel" : "lsw1-spare-ctrl", 
 								"value" : "B", 
 								"condition" : {"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw1-qs-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw1-qs-ctrl", "value" : "B"}, 
 								"lock" : {}, 
 								"delay" : 250 
 							},
@@ -1437,7 +1445,7 @@
 					},
 					{
 						"state" : "S",
-						"conform" : {"group" : "io", "channel" : "lsw1-spare-ctrl", "value" : "A"},
+						"conform" : {"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "A"},
 						"lock" : {
 							"or" : [
 								{"group" : "io", "channel" : "di-ul1-708", "value" : "1"},
@@ -1459,9 +1467,335 @@
 							},
 							{								
 								"group" : "auto", 
-								"channel" : "lsw2-spare-ctrl", 
+								"channel" : "lsw1-qs-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw1-qs-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw1-spare-ctrl", 
 								"value" : "A", 
 								"condition" : {"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "B"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw9-qf-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw9-qf-ctrl", "value" : "B"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							}
+						]
+					}
+				]
+			}
+		},
+
+		{
+			"group" : "automation-ctrl_3",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "lsw2-ast-ctrl",
+				"states" : [
+					{
+						"state" : "M",
+						"conform" : {"group" : "auto", "channel" : "lsw2-spare-ctrl", "value" : "B"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ul2-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-zap-708", "value" : "1"},
+								{"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw3-spare-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw4-spare-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{								
+								"group" : "auto", 
+								"channel" : "lsw9-qf-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw9-qf-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw2-spare-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw2-spare-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw2-qs-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw2-qs-ctrl", "value" : "B"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw2-qf-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw2-qf-ctrl", "value" : "B"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							}
+						]
+					},
+					{
+						"state" : "S",
+						"conform" : {"group" : "auto", "channel" : "lsw2-spare-ctrl", "value" : "A"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ul2-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-zap-708", "value" : "1"},
+								{"group" : "auto", "channel" : "lsw9-qf-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw3-spare-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw4-spare-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{								
+								"group" : "auto", 
+								"channel" : "lsw2-qf-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw2-qf-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw2-qs-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw2-qs-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw2-spare-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw2-spare-ctrl", "value" : "B"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw9-qf-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw9-qf-ctrl", "value" : "B"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							}
+						]
+					}
+				]
+			}
+		},
+
+		{
+			"group" : "automation-ctrl_3",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "lsw3-ast-ctrl",
+				"states" : [
+					{
+						"state" : "M",
+						"conform" : {"group" : "auto", "channel" : "lsw3-spare-ctrl", "value" : "B"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ul3-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-zap-708", "value" : "1"},
+								{"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw2-spare-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw4-spare-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{								
+								"group" : "auto", 
+								"channel" : "lsw9-qf-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw9-qf-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw3-spare-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw3-spare-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw3-qs-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw3-qs-ctrl", "value" : "B"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw3-qf-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw3-qf-ctrl", "value" : "B"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							}
+						]
+					},
+					{
+						"state" : "S",
+						"conform" : {"group" : "auto", "channel" : "lsw3-spare-ctrl", "value" : "A"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ul3-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-zap-708", "value" : "1"},
+								{"group" : "auto", "channel" : "lsw9-qf-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw2-spare-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw4-spare-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{								
+								"group" : "auto", 
+								"channel" : "lsw3-qf-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw3-qf-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw3-qs-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw3-qs-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw3-spare-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw3-spare-ctrl", "value" : "B"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw9-qf-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw9-qf-ctrl", "value" : "B"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							}
+						]
+					}
+				]
+			}
+		},
+
+		{
+			"group" : "automation-ctrl_3",
+			"handler" : "auto_control",
+			"configure" : {
+				"group" : "auto",
+				"channel" : "lsw4-ast-ctrl",
+				"states" : [
+					{
+						"state" : "M",
+						"conform" : {"group" : "auto", "channel" : "lsw4-spare-ctrl", "value" : "B"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ul4-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-zap-708", "value" : "1"},
+								{"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw2-spare-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw3-spare-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{								
+								"group" : "auto", 
+								"channel" : "lsw9-qf-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw9-qf-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw4-spare-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw4-spare-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw4-qs-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw4-qs-ctrl", "value" : "B"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw4-qf-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw4-qf-ctrl", "value" : "B"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							}
+						]
+					},
+					{
+						"state" : "S",
+						"conform" : {"group" : "auto", "channel" : "lsw4-spare-ctrl", "value" : "A"},
+						"lock" : {
+							"or" : [
+								{"group" : "io", "channel" : "di-ul4-708", "value" : "1"},
+								{"group" : "io", "channel" : "di-zap-708", "value" : "1"},
+								{"group" : "auto", "channel" : "lsw9-qf-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw1-spare-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw2-spare-ctrl", "value" : "A"},
+								{"group" : "auto", "channel" : "lsw3-spare-ctrl", "value" : "A"}
+							]							
+						},
+						"operate" : [
+							{								
+								"group" : "auto", 
+								"channel" : "lsw4-qf-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw4-qf-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw4-qs-ctrl", 
+								"value" : "B", 
+								"condition" : {"group" : "auto", "channel" : "lsw4-qs-ctrl", "value" : "A"}, 
+								"lock" : {}, 
+								"delay" : 250 
+							},
+							{								
+								"group" : "auto", 
+								"channel" : "lsw4-spare-ctrl", 
+								"value" : "A", 
+								"condition" : {"group" : "auto", "channel" : "lsw4-spare-ctrl", "value" : "B"}, 
 								"lock" : {}, 
 								"delay" : 250 
 							},
@@ -2558,6 +2892,68 @@
 						"state" : "R",
 						"count" : 3,
 						"conform" : {"group" : "io", "channel" : "di-113", "value" : "0"}
+					}
+				]
+			}
+		},
+
+		{
+			"group" : "io-cc301_0",
+			"handler" : "io_cc301",
+			"configure" : {
+				"serial_port" : "COM1",
+				"serial_options" : {
+					"baudrate": 19200,
+					"databits": 8,
+					"stopbits": 1,
+					"parity": "even" 
+				},
+				"interval" : 180000,
+				"devices" : [
+					{ 
+						"address" : 1,
+						"channels" : [
+							{
+								"group" : "io",
+								"channel" : "ol_total_active_energy",
+								"param" : "total_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "ol_instant_current",
+								"param" : "instant_mean_current" 
+							}
+						]
+					},
+					{ 
+						"address" : 2,
+						"channels" : [
+							{
+								"group" : "io",
+								"channel" : "leadin2_total_active_energy",
+								"param" : "total_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin2_instant_current",
+								"param" : "instant_mean_current" 
+							}
+						]
+					},
+					{ 
+						"address" : 3,
+						"channels" : [
+							{
+								"group" : "io",
+								"channel" : "leadin1_total_active_energy",
+								"param" : "total_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin1_instant_current",
+								"param" : "instant_mean_current" 
+							}
+						]
 					}
 				]
 			}

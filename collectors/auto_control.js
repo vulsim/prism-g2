@@ -106,7 +106,7 @@ Handler.prototype.operate = function (operate, cb) {
 		var iterator = function (index, cb) {
 			try {
 				if (operate[index]) {					
-					that.automation.check(operate[index].lock, false, function (result) {
+					that.automation.check(operate[index].lock, false, function (result) {						
 						try {
 							if (!result) {
 								if (operate[index].condition) {

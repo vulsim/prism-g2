@@ -117,6 +117,8 @@ Handler.prototype.cread = function (data, responce) {
 
 Handler.prototype.cwrite = function (data, responce) {
 	
+	var that = this;
+
 	try {
 		var channel = null;
 
