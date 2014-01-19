@@ -2687,32 +2687,14 @@
 						"state" : "S",
 						"count" : 3,
 						"conform" : {
-							"or" : [
+							"and" : [
+								{"group" : "io", "channel" : "di-zap-712", "value" : "1"},
+								{"group" : "io", "channel" : "di-zap-708", "value" : "0"},
 								{
-									"and" : [
-										{"group" : "io", "channel" : "di-zap-712", "value" : "1"},
-										{"group" : "io", "channel" : "di-zap-708", "value" : "0"},
-										{"group" : "io", "channel" : "di-ul1-719", "value" : "0"}
-									]
-								},
-								{
-									"and" : [
-										{"group" : "io", "channel" : "di-zap-712", "value" : "1"},
-										{"group" : "io", "channel" : "di-zap-708", "value" : "0"},
-										{"group" : "io", "channel" : "di-ul2-719", "value" : "0"}
-									]
-								},
-								{
-									"and" : [
-										{"group" : "io", "channel" : "di-zap-712", "value" : "1"},
-										{"group" : "io", "channel" : "di-zap-708", "value" : "0"},
-										{"group" : "io", "channel" : "di-ul3-719", "value" : "0"}
-									]
-								},
-								{
-									"and" : [
-										{"group" : "io", "channel" : "di-zap-712", "value" : "1"},
-										{"group" : "io", "channel" : "di-zap-708", "value" : "0"},
+									"or" : [
+										{"group" : "io", "channel" : "di-ul1-719", "value" : "0"},
+										{"group" : "io", "channel" : "di-ul2-719", "value" : "0"},
+										{"group" : "io", "channel" : "di-ul3-719", "value" : "0"},
 										{"group" : "io", "channel" : "di-ul4-719", "value" : "0"}
 									]
 								}
@@ -2725,10 +2707,14 @@
 						"conform" : {
 							"or" : [
 								{"group" : "io", "channel" : "di-zap-712", "value" : "0"},
-								{"group" : "io", "channel" : "di-ul1-719", "value" : "1"},
-								{"group" : "io", "channel" : "di-ul2-719", "value" : "1"},
-								{"group" : "io", "channel" : "di-ul3-719", "value" : "1"},
-								{"group" : "io", "channel" : "di-ul4-719", "value" : "1"}
+								{
+									"and" : [
+										{"group" : "io", "channel" : "di-ul1-719", "value" : "1"},
+										{"group" : "io", "channel" : "di-ul2-719", "value" : "1"},
+										{"group" : "io", "channel" : "di-ul3-719", "value" : "1"},
+										{"group" : "io", "channel" : "di-ul4-719", "value" : "1"}
+									]
+								}								
 							]
 						}
 					}
@@ -2916,13 +2902,53 @@
 							{
 								"group" : "io",
 								"channel" : "ol_total_active_energy",
-								"param" : "total_active_energy" 
+								"param" : "input_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "ol_total_eplus_energy",
+								"param" : "input_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "ol_total_eminus_energy",
+								"param" : "output_active_energy" 
+							},							
+							{
+								"group" : "io",
+								"channel" : "ol_total_rplus_energy",
+								"param" : "input_reactive_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "ol_total_rminus_energy",
+								"param" : "output_reactive_energy" 
 							},
 							{
 								"group" : "io",
 								"channel" : "ol_instant_current",
 								"param" : "instant_mean_current" 
-							}
+							},
+							{
+								"group" : "io",
+								"channel" : "ol_month_eplus_energy",
+								"param" : "input_month_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "ol_month_eminus_energy",
+								"param" : "output_month_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "ol_month_rplus_energy",
+								"param" : "input_month_reactive_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "ol_month_rminus_energy",
+								"param" : "output_month_reactive_energy" 
+							}							
 						]
 					},
 					{ 
@@ -2931,13 +2957,53 @@
 							{
 								"group" : "io",
 								"channel" : "leadin2_total_active_energy",
-								"param" : "total_active_energy" 
+								"param" : "input_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin2_total_eplus_energy",
+								"param" : "input_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin2_total_eminus_energy",
+								"param" : "output_active_energy" 
+							},							
+							{
+								"group" : "io",
+								"channel" : "leadin2_total_rplus_energy",
+								"param" : "input_reactive_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin2_total_rminus_energy",
+								"param" : "output_reactive_energy" 
 							},
 							{
 								"group" : "io",
 								"channel" : "leadin2_instant_current",
 								"param" : "instant_mean_current" 
-							}
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin2_month_eplus_energy",
+								"param" : "input_month_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin2_month_eminus_energy",
+								"param" : "output_month_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin2_month_rplus_energy",
+								"param" : "input_month_reactive_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin2_month_rminus_energy",
+								"param" : "output_month_reactive_energy" 
+							}							
 						]
 					},
 					{ 
@@ -2946,13 +3012,53 @@
 							{
 								"group" : "io",
 								"channel" : "leadin1_total_active_energy",
-								"param" : "total_active_energy" 
+								"param" : "input_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin1_total_eplus_energy",
+								"param" : "input_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin1_total_eminus_energy",
+								"param" : "output_active_energy" 
+							},							
+							{
+								"group" : "io",
+								"channel" : "leadin1_total_rplus_energy",
+								"param" : "input_reactive_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin1_total_rminus_energy",
+								"param" : "output_reactive_energy" 
 							},
 							{
 								"group" : "io",
 								"channel" : "leadin1_instant_current",
 								"param" : "instant_mean_current" 
-							}
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin1_month_eplus_energy",
+								"param" : "input_month_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin1_month_eminus_energy",
+								"param" : "output_month_active_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin1_month_rplus_energy",
+								"param" : "input_month_reactive_energy" 
+							},
+							{
+								"group" : "io",
+								"channel" : "leadin1_month_rminus_energy",
+								"param" : "output_month_reactive_energy" 
+							}							
 						]
 					}
 				]

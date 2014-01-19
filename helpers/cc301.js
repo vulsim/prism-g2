@@ -295,7 +295,7 @@ CC301.prototype.getMonthConsumedEnery = function (rawReadFunc, rawWriteFunc, dev
 				rawReadFunc(250, function (err, rawData) {
 					try {
 						var data = that.rawResponsePacket(rawData);
-						if (data && data.data && data.func == 3 && data.param == 1 && data.result == 0) {
+						if (data && data.data && data.func == 3 && data.param == 3 && data.result == 0) {
 							cb(null, {
 								"e_p" : data.data.readInt32LE(0),
 								"e_n" : data.data.readInt32LE(4),
