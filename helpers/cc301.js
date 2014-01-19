@@ -98,40 +98,54 @@ CC301.prototype.getDeviceInfo = function (rawReadFunc, rawWriteFunc, devId, cb) 
 													try {
 														that.getTotalConsumedEnery(rawReadFunc, rawWriteFunc, devId, function (err, totalEnergy) {
 															try {
-																if (err1 && err2) {
-																	cb(new Error("Device cannot be read"));
-																	return;
-																}
+																that.getMonthConsumedEnery(rawReadFunc, rawWriteFunc, devId, function (err, monthEnergy) {
+																	try {
+																		if (err1 && err2) {
+																			cb(new Error("Device cannot be read"));
+																			return;
+																		}
 
-																if (deviceType) {
-																	info.device_type = deviceType.replace(/\s/g, "");
-																}
+																		if (deviceType) {
+																			info.device_type = deviceType.replace(/\s/g, "");
+																		}
 
-																if (deviceSerial) {
-																	info.device_serial = deviceSerial.replace(/\s/g, "");
-																}
+																		if (deviceSerial) {
+																			info.device_serial = deviceSerial.replace(/\s/g, "");
+																		}
 
-																if (currentRatio && instantCurrent) {
-																	info.instant_current = [Math.round(instantCurrent[0] * currentRatio), Math.round(instantCurrent[1] * currentRatio), Math.round(instantCurrent[2] * currentRatio)];
-																	info.instant_mean_current = Math.round((info.instant_current[0] + info.instant_current[1] + info.instant_current[2]) / 3.0);
-																}
+																		if (currentRatio && instantCurrent) {
+																			info.instant_current = [Math.round(instantCurrent[0] * currentRatio), Math.round(instantCurrent[1] * currentRatio), Math.round(instantCurrent[2] * currentRatio)];
+																			info.instant_mean_current = Math.round((info.instant_current[0] + info.instant_current[1] + info.instant_current[2]) / 3.0);
+																		}
 
-																if (voltageRatio && instantVoltage) {
-																	info.instant_voltage = [Math.round(instantVoltage[0] * voltageRatio), Math.round(instantVoltage[1] * voltageRatio), Math.round(instantVoltage[2] * voltageRatio)];
-																	info.instant_mean_voltage = Math.round((info.instant_voltage[0] + info.instant_voltage[1] + info.instant_voltage[2]) / 3.0);
-																}
+																		if (voltageRatio && instantVoltage) {
+																			info.instant_voltage = [Math.round(instantVoltage[0] * voltageRatio), Math.round(instantVoltage[1] * voltageRatio), Math.round(instantVoltage[2] * voltageRatio)];
+																			info.instant_mean_voltage = Math.round((info.instant_voltage[0] + info.instant_voltage[1] + info.instant_voltage[2]) / 3.0);
+																		}
 
-																if (totalEnergy && currentRatio && voltageRatio) {
-																	info.input_active_energy = Math.round(totalEnergy.e_p * currentRatio * voltageRatio * 0.0001);
-																	info.output_active_energy = Math.round(totalEnergy.e_n * currentRatio * voltageRatio * 0.0001);
-																	info.total_active_energy = Math.round(info.input_active_energy + info.output_active_energy);
+																		if (totalEnergy && currentRatio && voltageRatio) {
+																			info.input_active_energy = Math.round(totalEnergy.e_p * currentRatio * voltageRatio * 0.0001);
+																			info.output_active_energy = Math.round(totalEnergy.e_n * currentRatio * voltageRatio * 0.0001);
+																			info.total_active_energy = Math.round(info.input_active_energy + info.output_active_energy);
 
-																	info.input_reactive_energy = Math.round(totalEnergy.r_p * currentRatio * voltageRatio * 0.0001);
-																	info.output_reactive_energy = Math.round(totalEnergy.r_n * currentRatio * voltageRatio * 0.0001);
-																	info.total_reactive_energy = Math.round(info.input_reactive_energy + info.output_reactive_energy);
-																}
-																
-																cb(null, info);
+																			info.input_reactive_energy = Math.round(totalEnergy.r_p * currentRatio * voltageRatio * 0.0001);
+																			info.output_reactive_energy = Math.round(totalEnergy.r_n * currentRatio * voltageRatio * 0.0001);
+																			info.total_reactive_energy = Math.round(info.input_reactive_energy + info.output_reactive_energy);
+																		}
+
+																		if (monthEnergy && currentRatio && voltageRatio) {
+																			info.input_month_active_energy = Math.round(monthEnergy.e_p * currentRatio * voltageRatio * 0.0001);
+																			info.output_month_active_energy = Math.round(monthEnergy.e_n * currentRatio * voltageRatio * 0.0001);
+																			info.input_month_reactive_energy = Math.round(monthEnergy.r_p * currentRatio * voltageRatio * 0.0001);
+																			info.output_month_reactive_energy = Math.round(monthEnergy.r_n * currentRatio * voltageRatio * 0.0001);
+																		}
+																		
+																		cb(null, info);
+																	} catch (e) {
+																		that.journal.error(e.stack.toString());
+																		cb(e);
+																	}			
+																});
 															} catch (e) {
 																that.journal.error(e.stack.toString());
 																cb(e);
@@ -241,6 +255,42 @@ CC301.prototype.getTotalConsumedEnery = function (rawReadFunc, rawWriteFunc, dev
 
 	try {
 		rawWriteFunc(that.rawRequestPacket(devId, 3, 1, 0, 0 ,0), function (err) {
+			try {
+				rawReadFunc(250, function (err, rawData) {
+					try {
+						var data = that.rawResponsePacket(rawData);
+						if (data && data.data && data.func == 3 && data.param == 1 && data.result == 0) {
+							cb(null, {
+								"e_p" : data.data.readInt32LE(0),
+								"e_n" : data.data.readInt32LE(4),
+								"r_p" : data.data.readInt32LE(8),
+								"r_n" : data.data.readInt32LE(12)
+							});
+						} else {
+							cb(new Error("An error occurred when reading from device"));
+						}
+					} catch (e) {
+						that.journal.error(e.stack.toString());
+						cb(e);
+					}
+				});
+			} catch (e) {
+				that.journal.error(e.stack.toString());
+				cb(e);
+			}
+		});
+	} catch (e) {
+		that.journal.error(e.stack.toString());
+		cb(e);
+	}
+};
+
+CC301.prototype.getMonthConsumedEnery = function (rawReadFunc, rawWriteFunc, devId, cb) {
+
+	var that = this;
+
+	try {
+		rawWriteFunc(that.rawRequestPacket(devId, 3, 3, -1, 0 ,0), function (err) {
 			try {
 				rawReadFunc(250, function (err, rawData) {
 					try {
