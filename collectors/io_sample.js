@@ -38,13 +38,10 @@ Handler.prototype.initialize = function (done) {
 
 	try {		
 		that.channels = (that.settings.publish) ? that.settings.publish : [];
-		//console.log(that.core.that.name);
 
 		var pubIterator = function (index, cb) {
 			try {
 				if (that.channels[index]) {
-					//console.log(that.core.uuid);				
-					//console.log(that.core.that.name);
 					that.core.cpub(that.channels[index].group, that.channels[index].channel, that.channels[index].value, function (e) {
 						try {
 							if (e) {
@@ -56,7 +53,6 @@ Handler.prototype.initialize = function (done) {
 							cb(e);
 						}			
 					});
-
 				} else {
 					cb();
 				}
@@ -123,12 +119,19 @@ Handler.prototype.cwrite = function (data, responce) {
 		var channel = null;
 
 		for (var index in that.channels) {
-			if (that.channels[index].group == that.group && that.channels[index].channel == data.channel) {
+			if (that.channels[index].group == data.group && that.channels[index].channel == data.channel) {
 				that.channels[index].value = data.value;
-				responce(null, that.channels[index].value);
+				that.core.cpub(data.group, data.channel, data.value, function (e) {
+					try {
+						responce(e, data.value);						
+					} catch (e) {
+						cb(e);
+					}			
+				});
 				return;
 			}
 		}
+
 		responce(new Error("Unknown channel"));
 	} catch (e) {
 		that.journal.error(e.stack.toString());
