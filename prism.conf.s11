@@ -241,6 +241,13 @@
 					"channels" : []
 				}				
 			}
+		},
+		{
+			"group" : "provider-poll_0",
+			"handler" : "provider_poll",
+			"configure" : {
+				"listen" : "0.0.0.0:1235"			
+			}
 		},		
 
 		{
